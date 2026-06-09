@@ -43,12 +43,26 @@ const TEAMS = [
 ];
 
 const PLAYERS = [
-  "Lionel Messi","Kylian Mbappé","Vinicius Jr","Erling Haaland",
-  "Pedri","Jude Bellingham","Rodri","Lamine Yamal","Raphinha",
-  "Marcus Rashford","Phil Foden","Bukayo Saka","Jamal Musiala",
-  "Gavi","Federico Valverde","Julián Álvarez","Cody Gakpo",
-  "Christian Pulisic","Alphonso Davies","Son Heung-min",
-  "Romelu Lukaku","Giovanni Reyna","Granit Xhaka",
+  "Kylian Mbappé","Erling Haaland","Vinicius Jr","Harry Kane","Lionel Messi",
+  "Cristiano Ronaldo","Lamine Yamal","Jude Bellingham","Bukayo Saka","Phil Foden",
+  "Mohamed Salah","Jamal Musiala","Florian Wirtz","Michael Olise","Rodrygo",
+  "Raphinha","Endrick","Marcus Rashford","Alexander Isak","Viktor Gyökeres",
+  "Julián Álvarez","Lautaro Martínez","Darwin Núñez","Son Heung-min","Cody Gakpo",
+  "Memphis Depay","Antoine Griezmann","Ousmane Dembélé","Marcus Thuram","Randal Kolo Muani",
+  "Kai Havertz","Niclas Füllkrug","Leroy Sané","Kevin De Bruyne","Romelu Lukaku",
+  "Jeremy Doku","Leandro Trossard","Álvaro Morata","Dani Olmo","Nico Williams",
+  "Pedri","Gavi","Luis Díaz","Jhon Durán","James Rodríguez",
+  "Rafael Leão","Bruno Fernandes","Bernardo Silva","Diogo Jota","Gonçalo Ramos",
+  "João Félix","Christian Pulisic","Timothy Weah","Folarin Balogun","Alphonso Davies",
+  "Jonathan David","Hirving Lozano","Santiago Giménez","Raúl Jiménez","Sadio Mané",
+  "Ismaïla Sarr","Youssef En-Nesyri","Hakim Ziyech","Achraf Hakimi","Arda Güler",
+  "Hakan Çalhanoğlu","Barış Alper Yılmaz","Kerem Aktürkoğlu","Enner Valencia","Moisés Caicedo",
+  "Federico Valverde","Takefusa Kubo","Takumi Minamino","Kaoru Mitoma","Breel Embolo",
+  "Xherdan Shaqiri","Granit Xhaka","Patrik Schick","Tomáš Souček","Andrej Kramarić",
+  "Ivan Perišić","Mohammed Kudus","Thomas Partey","Inaki Williams","Sardar Azmoun",
+  "Mehdi Taremi","Salem Al-Dawsari","Chris Wood","Hwang Hee-chan","Benjamin Šeško",
+  "Marcel Sabitzer","Marko Arnautović","Riyad Mahrez","Alejandro Garnacho","Richarlison",
+  "Duván Zapata","Miguel Almirón","Edin Džeko","John McGinn","Che Adams",
 ];
 
 // Mapa de estadios → ciudad legible
