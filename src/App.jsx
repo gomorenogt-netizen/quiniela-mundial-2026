@@ -1056,7 +1056,7 @@ export default function App() {
           body: JSON.stringify({ nickname: u.nickname, participants }),
         }).then(r => r.json()).then(d => {
           if (d.message) showToast(d.message);
-        }).catch(() => showToast(\`¡Bienvenido \${u.nickname}! ⚽\`));
+        }).catch(() => showToast("¡Bienvenido " + u.nickname + "! ⚽"));
       }
     }
     setTab(u.isAdmin ? "admin" : "tabla");
