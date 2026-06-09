@@ -1004,55 +1004,28 @@ export default function App() {
   };
 
   // ── WhatsApp share ──
-  const shareWhatsApp = async () => {
+const shareWhatsApp = () => {
     const sorted = [...participants]
       .map(p => ({ ...p, score: scores[p.id]?.total || 0 }))
       .sort((a, b) => b.score - a.score);
-
     const played = matches.filter(m => m.played);
     const lastMatch = played[played.length - 1];
     const pending = matches.filter(m => !m.played).length;
-    const medals = ["🥇","🥈","🥉"];
-
-    let msg = "⚽🏆 *QUINIELA MUNDIAL 2026* 🏆⚽\n";
-    msg += "━━━━━━━━━━━━━━━━━\n\n";
-
+    var msg = "QUINIELA MUNDIAL 2026\n";
+    msg += "======================\n\n";
     if (lastMatch) {
-      msg += "📺 *Último resultado:*\n";
-      msg += `${lastMatch.homeFlag} ${lastMatch.home} *${lastMatch.homeScore} – ${lastMatch.awayScore}* ${lastMatch.away} ${lastMatch.awayFlag}\n\n`;
+      msg += "Ultimo resultado:\n";
+      msg += lastMatch.home + " " + lastMatch.homeScore + " - " + lastMatch.awayScore + " " + lastMatch.away + "\n\n";
     }
-
-    msg += "🏆 *TABLA DE POSICIONES:*\n";
-    sorted.forEach((p, i) => {
-      const medal = i < 3 ? medals[i] : `${i+1}.`;
-      msg += `${medal} ${p.nickname}: *${p.score} pts*\n`;
+    msg += "TABLA DE POSICIONES:\n";
+    sorted.forEach(function(p, i) {
+      msg += (i+1) + ". " + p.nickname + ": " + p.score + " pts\n";
     });
-
-    msg += `\n📊 ${played.length} jugados · ${pending} pendientes\n`;
-    msg += `\n🃏 Multiplicador actual: ${PHASES[currentPhase]?.multiplier}x (${PHASES[currentPhase]?.label})\n`;
-
-    // Try to get AI comment
-    try {
-      const aiRes = await fetch("/api/welcome", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nickname: "resumen",
-          participants: sorted.map(p => ({ nickname: `${p.nickname} (${p.score}pts)` })),
-        }),
-      });
-      const aiData = await aiRes.json();
-      if (aiData.message) {
-        msg += `\n🎙️ *El Animador dice:*\n${aiData.message}\n`;
-      }
-    } catch {}
-
-    msg += "\n👉 Entra: quiniela-mundial-2026-five-opal.vercel.app\n";
-    msg += `🔑 Código: Mundi@l2026$!\n`;
-    msg += "\n🇺🇸🇲🇽🇨🇦 ¡Que gane el mejor!";
-
-    const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/?text=${encoded}`, "_blank");
+    msg += "\n" + played.length + " jugados - " + pending + " pendientes\n";
+    msg += "Multiplicador: " + PHASES[currentPhase].multiplier + "x (" + PHASES[currentPhase].label + ")\n";
+    msg += "\nEntra: quiniela-mundial-2026-five-opal.vercel.app\n";
+    msg += "Codigo: Mundi@l2026$!\n";
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
   };
 
   const handleLogin = (u) => {
