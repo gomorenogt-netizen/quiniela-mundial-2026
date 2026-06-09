@@ -1019,13 +1019,18 @@ const shareWhatsApp = () => {
     }
     msg += "TABLA DE POSICIONES:\n";
     sorted.forEach(function(p, i) {
-      msg += (i+1) + ". " + p.nickname + ": " + p.score + " pts\n";
+      var name = p.nickname.replace(/[\u{1F000}-\u{1FFFF}|\u{2600}-\u{27BF}|\u{FE00}-\u{FEFF}|\u{1F900}-\u{1F9FF}|\u{1FA00}-\u{1FA6F}|\u{1FA70}-\u{1FAFF}|\u{2702}-\u{27B0}|\u{FE0F}|\u{200D}|\u{1F1E0}-\u{1F1FF}]/gu, "").trim();
+      msg += (i+1) + ". " + name + ": " + p.score + " pts\n";
     });
     msg += "\n" + played.length + " jugados - " + pending + " pendientes\n";
     msg += "Multiplicador: " + PHASES[currentPhase].multiplier + "x (" + PHASES[currentPhase].label + ")\n";
     msg += "\nEntra: quiniela-mundial-2026-five-opal.vercel.app\n";
     msg += "Codigo: Mundi@l2026$!\n";
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+    if (navigator.share) {
+      navigator.share({ text: msg });
+    } else {
+      window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+    }
   };
 
   const handleLogin = (u) => {
