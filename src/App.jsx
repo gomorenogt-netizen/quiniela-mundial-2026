@@ -956,16 +956,6 @@ export default function App() {
       if (m)  setMatches(m);
       if (pr) setPredictions(pr);
       if (sp) setSpecials(sp);
-      // Seed if no participants exist
-      if (!p || p.length === 0) {
-        console.log("Seeding initial data...");
-        await storeSet("q26:participants", SEED_PARTICIPANTS);
-        await storeSet("q26:specials", SEED_SPECIALS);
-        await storeSet("q26:predictions", buildSeedPredictions());
-        setParticipants(SEED_PARTICIPANTS);
-        setSpecials(SEED_SPECIALS);
-        setPredictions(buildSeedPredictions());
-      }
       setLoaded(true);
     })();
   }, []);
