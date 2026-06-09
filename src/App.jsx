@@ -1135,7 +1135,7 @@ const shareWhatsApp = () => {
                 {!user.isAdmin && <span className="text-emerald-400 text-xs font-black">{scores[user.id]?.total || 0}pts</span>}
                 {user.isAdmin && <Pill color="amber" size="xs">admin</Pill>}
               </div>
-              {user.isAdmin && <button onClick={shareWhatsApp} className="text-green-500 hover:text-green-400 text-xs px-2 py-1.5 rounded-lg hover:bg-slate-800 transition-all" title="Compartir en WhatsApp">📲</button>}
+              {user.isAdmin && <button onClick={shareWhatsApp} className="text-green-500 hover:text-green-400 text-xs px-2 py-1.5 rounded-lg hover:bg-slate-800 transition-all" title="Compartir">📲</button>}
               <button onClick={() => { setUser(null); try { localStorage.removeItem("q26_user"); } catch {} }} className="text-slate-600 hover:text-slate-400 text-xs px-2 py-1.5 rounded-lg hover:bg-slate-800 transition-all">salir</button>
             </div>
           </div>
