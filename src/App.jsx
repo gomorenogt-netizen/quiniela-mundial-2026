@@ -1341,20 +1341,43 @@ const shareWhatsApp = () => {
         {tab === "admin" && user.isAdmin && (
           <>
             {/* Live score toggle info */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
-              <div className="flex items-center justify-between">
+<div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-3">
                 <div>
                   <p className="text-white font-bold text-sm">🌐 Resultados en línea</p>
-                  <p className="text-slate-500 text-xs mt-0.5">API: football-data.org · Mundial 2026</p>
+                  <p className="text-slate-500 text-xs mt-0.5">football-data.org</p>
                 </div>
-                <button onClick={() => { setLiveRefresh(v => !v); showToast(liveRefresh ? "⏹ Auto-refresh desactivado" : "▶️ Auto-refresh activado", "info"); }}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${liveRefresh ? "bg-rose-600 border-rose-500 text-white" : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white"}`}>
-                  {liveRefresh ? "⏹ Detener" : "▶️ Activar"}
+                <button onClick={async () => {
+                  showToast("Consultando resultados...", "info");
+                  try {
+                    var r = await fetch("/api/scores");
+                    var data = await r.json();
+                    if (data.error) { showToast("Error: " + data.error, "err"); return; }
+                    var nameMap = {"Mexico":"México","South Korea":"Corea del Sur","Czech Republic":"Rep. Checa","South Africa":"Sudáfrica","Canada":"Canadá","Bosnia and Herzegovina":"Bosnia y Herz.","Switzerland":"Suiza","Brazil":"Brasil","Morocco":"Marruecos","Haiti":"Haití","Scotland":"Escocia","United States":"EEUU","USA":"EEUU","Paraguay":"Paraguay","Australia":"Australia","Turkey":"Turquía","Türkiye":"Turquía","Germany":"Alemania","Curaçao":"Curazao","Ivory Coast":"Costa de Marfil","Ecuador":"Ecuador","Netherlands":"Países Bajos","Japan":"Japón","Sweden":"Suecia","Tunisia":"Túnez","Belgium":"Bélgica","Egypt":"Egipto","Iran":"Irán","New Zealand":"Nueva Zelanda","Spain":"España","Cape Verde":"Cabo Verde","Saudi Arabia":"Arabia Saudita","Uruguay":"Uruguay","France":"Francia","Senegal":"Senegal","Iraq":"Irak","Norway":"Noruega","Argentina":"Argentina","Algeria":"Argelia","Austria":"Austria","Jordan":"Jordania","Portugal":"Portugal","DR Congo":"RD Congo","Uzbekistan":"Uzbekistán","Colombia":"Colombia","England":"Inglaterra","Croatia":"Croacia","Ghana":"Ghana","Panama":"Panamá","Qatar":"Qatar"};
+                    var updated = 0;
+                    var newMatches = [...matches];
+                    data.matches.forEach(function(fm) {
+                      var home = nameMap[fm.homeTeam] || fm.homeTeam;
+                      var away = nameMap[fm.awayTeam] || fm.awayTeam;
+                      var idx = newMatches.findIndex(function(m) { return m.home === home && m.away === away && !m.played; });
+                      if (idx > -1) {
+                        newMatches[idx] = Object.assign({}, newMatches[idx], { homeScore: fm.homeScore, awayScore: fm.awayScore, played: true });
+                        updated++;
+                      }
+                    });
+                    if (updated > 0) {
+                      setMatches(newMatches);
+                      showToast("Actualizados " + updated + " resultados!", "ok");
+                    } else {
+                      showToast("No hay resultados nuevos", "info");
+                    }
+                  } catch(e) { showToast("Error de conexion", "err"); }
+                }}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">
+                  Actualizar resultados
                 </button>
               </div>
-              <div className="mt-3 bg-amber-950/30 border border-amber-800/20 rounded-xl px-3 py-2 text-xs text-amber-600">
-                ⚠️ Para conectar la API en producción: registra tu clave gratuita en football-data.org y configúrala en el servidor. En esta demo los resultados se cargan manualmente desde "Partidos".
-              </div>
+              <p className="text-slate-600 text-xs">Presiona para consultar resultados de partidos terminados</p>
             </div>
             <AdminPanel participants={participants} matches={matches}
               predictions={predictions} specials={specials} scores={scores} />
