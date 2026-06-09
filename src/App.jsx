@@ -1033,7 +1033,7 @@ const shareWhatsApp = () => {
     var msg = lines.join("\n");
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (isMobile && navigator.share) {
-      navigator.share({ title: "Quiniela Mundial 2026", text: msg, url: "https://quiniela-mundial-2026-five-opal.vercel.app" }).catch(function() {});
+      navigator.share({ text: msg }).catch(function() {});
     } else {
       navigator.clipboard.writeText(msg).then(function() {
         showToast("Copiado! Pegalo en WhatsApp", "ok");
