@@ -1028,20 +1028,25 @@ const shareWhatsApp = () => {
     lines.push(played.length + " jugados - " + pending + " pendientes");
     lines.push("Multiplicador: " + PHASES[currentPhase].multiplier + "x (" + PHASES[currentPhase].label + ")");
     lines.push("");
-    lines.push(String.fromCodePoint(0x1F449) + " Entra: quiniela-mundial-2026-five-opal.vercel.app");
+    lines.push(String.fromCodePoint(0x1F449) + " Entra: https://quiniela-mundial-2026-five-opal.vercel.app");
     lines.push(String.fromCodePoint(0x1F511) + " Codigo: Mundi@l2026$!");
     var msg = lines.join("\n");
-    navigator.clipboard.writeText(msg).then(function() {
-      showToast("Copiado! Pegalo en WhatsApp", "ok");
-    }).catch(function() {
-      var ta = document.createElement("textarea");
-      ta.value = msg;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      showToast("Copiado! Pegalo en WhatsApp", "ok");
-    });
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile && navigator.share) {
+      navigator.share({ title: "Quiniela Mundial 2026", text: msg, url: "https://quiniela-mundial-2026-five-opal.vercel.app" }).catch(function() {});
+    } else {
+      navigator.clipboard.writeText(msg).then(function() {
+        showToast("Copiado! Pegalo en WhatsApp", "ok");
+      }).catch(function() {
+        var ta = document.createElement("textarea");
+        ta.value = msg;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        showToast("Copiado! Pegalo en WhatsApp o Mensaje de Texto", "ok");
+      });
+    }
   };
 
   const handleLogin = (u) => {
@@ -1400,9 +1405,9 @@ const shareWhatsApp = () => {
         <div className="py-4">
           <button onClick={shareWhatsApp}
             className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3.5 rounded-2xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-600/20">
-            <span className="text-lg">📲</span> Compartir en WhatsApp
+            <span className="text-lg">📲</span> Compartir
           </button>
-          <p className="text-slate-700 text-xs text-center mt-2">Envía la tabla, resultados y mensaje de la IA al grupo</p>
+          <p className="text-slate-700 text-xs text-center mt-2"> Copia la tabla y resultados para compartir</p>
         </div>
         )}
 
