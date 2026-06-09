@@ -661,7 +661,30 @@ function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin })
           </div>
         </div>
       )}
-
+{/* Comparison — show all predictions after match is played */}
+      {match.played && participants && participants.length > 0 && (
+        <div className="border-t border-slate-800 px-4 py-3">
+          <p className="text-slate-500 text-xs font-bold mb-2">📊 Predicciones de todos:</p>
+          <div className="space-y-1.5">
+            {participants.map(p => {
+              const pred = allPredictions?.[p.id + "::" + match.id];
+              if (!pred) return null;
+              const pR = pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D";
+              const aR = match.homeScore > match.awayScore ? "H" : match.awayScore > match.homeScore ? "A" : "D";
+              const ok = pR === aR;
+              const ex = ok && pred.h === match.homeScore && pred.a === match.awayScore;
+              return (
+                <div key={p.id} className="flex items-center gap-2 text-xs">
+                  <span>{p.avatar}</span>
+                  <span className="text-slate-300 flex-1 truncate">{p.nickname}</span>
+                  <span className="font-black text-white">{pred.h}–{pred.a}</span>
+                  <span>{ex ? "⭐" : ok ? "✓" : "✗"}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
       {/* Admin result entry */}
       {isAdmin && !match.played && (
         <div className="border-t border-amber-900/40 px-4 py-3 bg-amber-950/20">
@@ -1024,7 +1047,7 @@ export default function App() {
       }
     } catch {}
 
-    msg += `\n👉 Entra: quiniela-mundial-2026-coral-beta.vercel.app\n`;
+    msg += "\n👉 Entra: quiniela-mundial-2026-five-opal.vercel.app\n";
     msg += `🔑 Código: Mundi@l2026$!\n`;
     msg += "\n🇺🇸🇲🇽🇨🇦 ¡Que gane el mejor!";
 
@@ -1182,10 +1205,11 @@ export default function App() {
               </div>
             )}
             {phaseMatches.map(m => (
-              <MatchCard key={m.id} match={m} user={meAsParticipant || user}
+             <MatchCard key={m.id} match={m} user={meAsParticipant || user}
                 prediction={predictions[`${user.id}::${m.id}`]}
                 onPredict={handlePredict} onSetResult={handleSetResult}
-                isAdmin={user.isAdmin} />
+                isAdmin={user.isAdmin}
+                participants={participants} allPredictions={predictions} />
             ))}
           </div>
         )}
