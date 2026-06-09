@@ -1063,13 +1063,26 @@ const shareWhatsApp = () => {
     }
   };
 
-  const handleLogin = (u) => {
+ const handleLogin = (u) => {
+    if (!u.isAdmin) {
+      var existing = participants.find(function(p) { return p.nickname === u.nickname; });
+      if (existing) {
+        u = Object.assign({}, existing);
+      } else {
+        setParticipants(function(prev) { return [...prev, u]; });
+        fetch("/api/welcome", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nickname: u.nickname, participants: participants }),
+        }).then(function(r) { return r.json(); }).then(function(d) {
+          if (d.message) showToast(d.message);
+        }).catch(function() { showToast("Bienvenido " + u.nickname + "!"); });
+      }
+    }
     setUser(u);
     try { localStorage.setItem("q26_user", JSON.stringify(u)); } catch {}
-    if (!u.isAdmin) {
-      const exists = participants.find(p => p.id === u.id);
-      if (!exists) {
-        setParticipants(prev => [...prev, u]);
+    setTab(u.isAdmin ? "admin" : "tabla");
+  };
         // AI welcome message
         fetch("/api/welcome", {
           method: "POST",
