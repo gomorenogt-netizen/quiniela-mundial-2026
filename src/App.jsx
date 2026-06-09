@@ -1011,26 +1011,37 @@ const shareWhatsApp = () => {
     const played = matches.filter(m => m.played);
     const lastMatch = played[played.length - 1];
     const pending = matches.filter(m => !m.played).length;
-    var msg = "QUINIELA MUNDIAL 2026\n";
-    msg += "======================\n\n";
+    var lines = [];
+    lines.push(String.fromCodePoint(0x26BD) + String.fromCodePoint(0x1F3C6) + " *QUINIELA MUNDIAL 2026* " + String.fromCodePoint(0x1F3C6) + String.fromCodePoint(0x26BD));
+    lines.push("======================");
+    lines.push("");
     if (lastMatch) {
-      msg += "Ultimo resultado:\n";
-      msg += lastMatch.home + " " + lastMatch.homeScore + " - " + lastMatch.awayScore + " " + lastMatch.away + "\n\n";
+      lines.push(String.fromCodePoint(0x1F4FA) + " *Ultimo resultado:*");
+      lines.push(lastMatch.home + " *" + lastMatch.homeScore + " - " + lastMatch.awayScore + "* " + lastMatch.away);
+      lines.push("");
     }
-    msg += "TABLA DE POSICIONES:\n";
+    lines.push(String.fromCodePoint(0x1F3C6) + " *TABLA DE POSICIONES:*");
     sorted.forEach(function(p, i) {
-      var name = p.nickname.replace(/[\u{1F000}-\u{1FFFF}|\u{2600}-\u{27BF}|\u{FE00}-\u{FEFF}|\u{1F900}-\u{1F9FF}|\u{1FA00}-\u{1FA6F}|\u{1FA70}-\u{1FAFF}|\u{2702}-\u{27B0}|\u{FE0F}|\u{200D}|\u{1F1E0}-\u{1F1FF}]/gu, "").trim();
-      msg += (i+1) + ". " + name + ": " + p.score + " pts\n";
+      lines.push((i+1) + ". " + p.nickname + ": *" + p.score + " pts*");
     });
-    msg += "\n" + played.length + " jugados - " + pending + " pendientes\n";
-    msg += "Multiplicador: " + PHASES[currentPhase].multiplier + "x (" + PHASES[currentPhase].label + ")\n";
-    msg += "\nEntra: quiniela-mundial-2026-five-opal.vercel.app\n";
-    msg += "Codigo: Mundi@l2026$!\n";
-    if (navigator.share) {
-      navigator.share({ text: msg });
-    } else {
-      window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
-    }
+    lines.push("");
+    lines.push(played.length + " jugados - " + pending + " pendientes");
+    lines.push("Multiplicador: " + PHASES[currentPhase].multiplier + "x (" + PHASES[currentPhase].label + ")");
+    lines.push("");
+    lines.push(String.fromCodePoint(0x1F449) + " Entra: quiniela-mundial-2026-five-opal.vercel.app");
+    lines.push(String.fromCodePoint(0x1F511) + " Codigo: Mundi@l2026$!");
+    var msg = lines.join("\n");
+    navigator.clipboard.writeText(msg).then(function() {
+      showToast("Copiado! Pegalo en WhatsApp", "ok");
+    }).catch(function() {
+      var ta = document.createElement("textarea");
+      ta.value = msg;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast("Copiado! Pegalo en WhatsApp", "ok");
+    });
   };
 
   const handleLogin = (u) => {
