@@ -655,7 +655,7 @@ function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin })
       </div>
 
       {/* Prediction input */}
-      {!match.played && !user?.isAdmin && (
+      {!match.played && !user?.isAdmin && new Date() < new Date(match.date + "T" + match.time.replace(":",":") + ":00-04:00") && (
         <div className="border-t border-slate-800 px-4 py-3">
           <p className="text-slate-500 text-xs text-center mb-2">
             {prediction ? `Tu predicción: ${prediction.h}–${prediction.a} · Editar:` : "Tu predicción:"}
