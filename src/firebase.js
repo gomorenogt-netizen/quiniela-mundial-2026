@@ -8,13 +8,14 @@ import { getDatabase, ref, set, get, onValue, push } from "firebase/database";
 // Luego: Configuración del proyecto → Tu app web → Copiar config
 // ════════════════════════════════════════════════════
 const firebaseConfig = {
-  apiKey: "TU_API_KEY_AQUI",
-  authDomain: "tu-proyecto.firebaseapp.com",
-  databaseURL: "https://tu-proyecto-default-rtdb.firebaseio.com",
-  projectId: "tu-proyecto",
-  storageBucket: "tu-proyecto.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "TU_APP_ID_AQUI"
+ apiKey: "AIzaSyDsCIaibTSkzrEV-pQ1jy_LL_67Mma6BBU",
+  authDomain: "quiniela-mundial-7bcc9.firebaseapp.com",
+  databaseURL: "https://quiniela-mundial-7bcc9-default-rtdb.firebaseio.com",
+  projectId: "quiniela-mundial-7bcc9",
+  storageBucket: "quiniela-mundial-7bcc9.firebasestorage.app",
+  messagingSenderId: "100984392941",
+  appId: "1:100984392941:web:43d28903723066d27dd0e4",
+  measurementId: "G-2CZTZJTBTC"
 };
 
 const app = initializeApp(firebaseConfig);
