@@ -1069,7 +1069,12 @@ const shareWhatsApp = () => {
       if (existing) {
         u = Object.assign({}, existing);
       } else {
-        setParticipants(function(prev) { return [...prev, u]; });
+        } else {
+        setParticipants(function(prev) {
+          var updated = [...prev, u];
+          storeSet("q26:participants", updated);
+          return updated;
+        });
         fetch("/api/welcome", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
