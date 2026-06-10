@@ -1068,8 +1068,7 @@ const shareWhatsApp = () => {
       var existing = participants.find(function(p) { return p.nickname === u.nickname; });
       if (existing) {
         u = Object.assign({}, existing);
-      } else {
-        } else {
+      else {
         setParticipants(function(prev) {
           var updated = [...prev, u];
           storeSet("q26:participants", updated);
