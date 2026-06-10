@@ -589,7 +589,7 @@ function Leaderboard({ participants, scores, currentPhase, currentUser }) {
 // ============================================================
 // MATCH CARD
 // ============================================================
-function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin }) {
+function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin, participants, allPredictions }) {
   const [ph, setPh] = useState(prediction?.h ?? "");
   const [pa, setPa] = useState(prediction?.a ?? "");
   const [rh, setRh] = useState(match.homeScore ?? "");
@@ -1083,19 +1083,7 @@ const shareWhatsApp = () => {
     try { localStorage.setItem("q26_user", JSON.stringify(u)); } catch {}
     setTab(u.isAdmin ? "admin" : "tabla");
   };
-        // AI welcome message
-        fetch("/api/welcome", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nickname: u.nickname, participants }),
-        }).then(r => r.json()).then(d => {
-          if (d.message) showToast(d.message);
-        }).catch(() => showToast("¡Bienvenido " + u.nickname + "! ⚽"));
-      }
-    }
-    setTab(u.isAdmin ? "admin" : "tabla");
-  };
-
+       
   const handlePredict = (matchId, pred) => {
     const key = `${user.id}::${matchId}`;
     setPredictions(prev => ({ ...prev, [key]: pred }));
