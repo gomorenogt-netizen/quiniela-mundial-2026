@@ -1072,13 +1072,17 @@ const shareWhatsApp = () => {
     if (!u.isAdmin) {
       var existing = participants.find(function(p) { return p.nickname === u.nickname; });
       if (existing) {
-        u = Object.assign({}, existing);
-     } else {
-        setParticipants(function(prev) {
-          var updated = [...prev, u];
-          storeSet("q26:participants", updated);
-          return updated;
+        u = Object.assign({},       } else {
+        storeGet("q26:participants").then(function(current) {
+          var list = current || [];
+          var alreadyExists = list.find(function(p) { return p.nickname === u.nickname; });
+          if (!alreadyExists) {
+            list.push(u);
+            storeSet("q26:participants", list);
+          }
+          setParticipants(list);
         });
+
         fetch("/api/welcome", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
