@@ -1193,8 +1193,8 @@ const shareWhatsApp = () => {
           <>
             {!user.isAdmin && new Date() < new Date("2026-06-11T15:00:00-04:00") && !specials[user.id]?.campeon && (
               <div className="bg-amber-950/40 border border-amber-700/50 rounded-2xl p-4" onClick={() => setTab("especiales")}>
-                <p className="text-amber-400 font-bold text-sm">⚠️ No olvides tus predicciones especiales!</p>
-                <p className="text-slate-400 text-xs mt-1">60 puntos en juego — elige campeon, subcampeon y goleador antes del primer partido. Toca aqui para llenarlas.</p>
+                <p className="text-amber-400 font-bold text-sm">⚠️ Llena tu quiniela antes del primer partido!</p>
+                <p className="text-slate-400 text-xs mt-1">1. Ve a Especiales — elige campeon, subcampeon y goleador (60 pts en juego). 2. Ve a Partidos — llena los 72 partidos de la fase de grupos. Se bloquean al pitazo de cada partido!</p>
               </div>
             )}
             <Leaderboard participants={participants} scores={scores} currentPhase={currentPhase} currentUser={user} />
