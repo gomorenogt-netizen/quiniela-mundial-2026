@@ -1190,7 +1190,15 @@ const shareWhatsApp = () => {
       <div className="max-w-2xl mx-auto px-4 py-5 space-y-4">
 
         {tab === "tabla" && (
-          <Leaderboard participants={participants} scores={scores} currentPhase={currentPhase} currentUser={user} />
+          <>
+            {!user.isAdmin && new Date() < new Date("2026-06-11T15:00:00-04:00") && !specials[user.id]?.campeon && (
+              <div className="bg-amber-950/40 border border-amber-700/50 rounded-2xl p-4" onClick={() => setTab("especiales")}>
+                <p className="text-amber-400 font-bold text-sm">⚠️ No olvides tus predicciones especiales!</p>
+                <p className="text-slate-400 text-xs mt-1">60 puntos en juego — elige campeon, subcampeon y goleador antes del primer partido. Toca aqui para llenarlas.</p>
+              </div>
+            )}
+            <Leaderboard participants={participants} scores={scores} currentPhase={currentPhase} currentUser={user} />
+          </>
         )}
 
         {tab === "partidos" && (
