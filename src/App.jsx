@@ -808,11 +808,16 @@ function SpecialPreds({ user, specials, onSave }) {
         </div>
       ))}
 
-      <button onClick={() => onSave(user.id, form)}
-        className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm transition-all">
-        💾 Guardar predicciones especiales
-      </button>
-
+      {new Date() < new Date("2026-06-11T15:00:00-04:00") ? (
+        <button onClick={() => onSave(user.id, form)}
+          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm transition-all">
+          💾 Guardar predicciones especiales
+        </button>
+      ) : (
+        <div className="w-full bg-slate-800 text-slate-500 font-bold py-3 rounded-xl text-sm text-center">
+          🔒 Predicciones especiales bloqueadas — torneo en curso
+        </div>
+      )}
       {(mine.campeon || mine.subcampeon || mine.goleador) && (
         <div className="bg-slate-800/40 rounded-xl p-3 text-xs text-slate-400 space-y-1">
           <p className="font-semibold text-slate-300">Guardadas:</p>
