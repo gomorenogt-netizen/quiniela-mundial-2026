@@ -883,10 +883,10 @@ One for each: ${sorted.map(p=>p.nickname).join(", ")}`;
       <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
         <div className="flex items-center justify-between mb-1">
           <h3 className="text-white font-bold text-lg">🤖 Mensajes de la IA</h3>
-          <button onClick={generate} disabled={loading}
+{isAdmin && <button onClick={generate} disabled={loading}
             className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">
             {loading ? "⏳ Generando..." : "✨ Generar"}
-          </button>
+          </button>}
         </div>
         <p className="text-slate-500 text-xs">Mensajes personalizados basados en resultados y posiciones reales</p>
       </div>
@@ -1396,8 +1396,8 @@ const handleLogin = (u) => {
         )}
 
         {tab === "mensajes" && (
-          <AIMessages participants={participants} matches={matches} scores={scores} />
-        )}
+  <AIMessages participants={participants} matches={matches} scores={scores} isAdmin={user.isAdmin} />
+)}
 
         {tab === "admin" && user.isAdmin && (
           <>
