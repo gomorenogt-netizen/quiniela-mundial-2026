@@ -1005,7 +1005,6 @@ export default function App() {
   // ── Persist on change ──
   useEffect(() => { if (loaded) storeSet("q26:participants", participants); }, [participants, loaded]);
   useEffect(() => { if (loaded) storeSet("q26:matches",      matches);      }, [matches,      loaded]);
-  useEffect(() => { if (loaded) storeSet("q26:predictions",  predictions);  }, [predictions,  loaded]);
   useEffect(() => { if (loaded) storeSet("q26:specials",     specials);     }, [specials,      loaded]);
 
   // ── Live-score polling simulation ──
@@ -1072,7 +1071,8 @@ const shareWhatsApp = () => {
     if (!u.isAdmin) {
       var existing = participants.find(function(p) { return p.nickname === u.nickname; });
       if (existing) {
-        u = Object.assign({},       } else {
+        u = Object.assignu = Object.assign({}, existing);
+      } else {({},       } else {
         storeGet("q26:participants").then(function(current) {
           var list = current || [];
           var alreadyExists = list.find(function(p) { return p.nickname === u.nickname; });
@@ -1097,9 +1097,14 @@ const shareWhatsApp = () => {
     setTab(u.isAdmin ? "admin" : "tabla");
   };
        
-  const handlePredict = (matchId, pred) => {
+ const handlePredict = (matchId, pred) => {
     const key = `${user.id}::${matchId}`;
     setPredictions(prev => ({ ...prev, [key]: pred }));
+    storeGet("q26:predictions").then(function(current) {
+      var all = current || {};
+      all[key] = pred;
+      storeSet("q26:predictions", all);
+    });
     showToast("✅ Predicción guardada");
   };
 
@@ -1195,7 +1200,7 @@ const shareWhatsApp = () => {
 
         {tab === "tabla" && (
           <>
-            {!user.isAdmin && new Date() < new Date("2026-06-11T15:00:00-04:00") && !specials[user.id]?.campeon && (
+            {!user.isAdmin && new Date() < new Date("2026-06-14T23:59:00-04:00") && !specials[user.id]?.campeon && (
               <div className="bg-amber-950/40 border border-amber-700/50 rounded-2xl p-4" onClick={() => setTab("especiales")}>
                 <p className="text-amber-400 font-bold text-sm">⚠️ Llena tu quiniela antes del primer partido!</p>
                 <p className="text-slate-400 text-xs mt-1">1. Ve a Especiales — elige campeon, subcampeon y goleador (60 pts en juego). 2. Ve a Partidos — llena los 72 partidos de la fase de grupos. Se bloquean al pitazo de cada partido!</p>
