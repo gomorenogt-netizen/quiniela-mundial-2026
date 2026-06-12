@@ -853,7 +853,7 @@ function AIMessages({ participants, matches, scores, isAdmin }) {
     const played = matches.filter(m => m.played);
     const last = played[played.length - 1];
 
-const prompt = `Eres el animador de una quiniela mundialista. Genera exactamente ${Math.min(participants.length, 12)} mensajes cortos (max 30 palabras cada uno) en spanglish estilo Miami. Con emojis y humor. Tabla: ${sorted.slice(0,12).map((p,i)=>(i+1)+"."+p.nickname+"("+p.score+"pts)").join(",")}. Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
+const prompt = `Eres el animador de una quiniela mundialista. Genera exactamente ${Math.min(participants.length, 12)} mensajes cortos (max 30 palabras cada uno) en spanglish estilo Miami. Con emojis y humor. Tabla: ${sorted.slice(0,12).map((p,i)=>(i+1)+"."+p.nickname+"("+p.score+"pts,"+(p.gender||"M")+")").join(",")}. M=male F=female AI=artificial intelligence. Use correct gender in Spanish.. Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
     try {
       const res = await fetch("/api/chat", {
         method:"POST",
