@@ -808,7 +808,7 @@ function SpecialPreds({ user, specials, onSave }) {
         </div>
       ))}
 
-      {new Date() < new Date("2026-06-11T15:00:00-04:00") ? (
+      {new Date() < new Date("2026-06-14T23:59:00-04:00") ? (
         <button onClick={() => onSave(user.id, form)}
           className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm transition-all">
           💾 Guardar predicciones especiales
