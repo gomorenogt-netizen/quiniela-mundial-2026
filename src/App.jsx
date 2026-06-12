@@ -854,13 +854,6 @@ function AIMessages({ participants, matches, scores, isAdmin }) {
     const last = played[played.length - 1];
 
 const prompt = `Eres el animador de una quiniela mundialista. Genera exactamente ${Math.min(participants.length, 12)} mensajes cortos (max 15 palabras cada uno) en spanglish estilo Miami. Con emojis y humor. Tabla: ${sorted.slice(0,12).map((p,i)=>(i+1)+"."+p.nickname+"("+p.score+"pts)").join(",")}. Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
-    Current standings: ${sorted.map((p,i) => (i+1) + ". " + p.avatar + p.nickname + " (" + p.score + "pts)").join(", ")}
-${last ? "Last match: " + last.home + " " + last.homeScore + "-" + last.awayScore + " " + last.away : "Tournament starting soon"}
-
-Generate a JSON array, no markdown, no extra text:
-[{"nickname":"...","mensaje":"..."}]
-For: ${sorted.slice(0, Math.min(participants.length, 12)).map(p=>p.nickname).join(",")}`;
-
     try {
       const res = await fetch("/api/chat", {
         method:"POST",
