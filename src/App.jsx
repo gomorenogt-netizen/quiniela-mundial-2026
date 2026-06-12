@@ -834,9 +834,16 @@ function SpecialPreds({ user, specials, onSave }) {
 // ============================================================
 // AI MESSAGES
 // ============================================================
-function AIMessages({ participants, matches, scores }) {
+function AIMessages({ participants, matches, scores, isAdmin }) {
   const [msgs, setMsgs] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Cargar mensajes guardados al iniciar
+  useEffect(() => {
+    storeGet("q26:messages").then(function(data) {
+      if (data && data.msgs) setMsgs(data.msgs);
+    });
+  }, []);
 
   const generate = async () => {
     setLoading(true);
@@ -859,7 +866,7 @@ One for each: ${sorted.map(p=>p.nickname).join(", ")}`;
       const res = await fetch("/api/chat", {
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}] })
+        body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:1000, messages:[{role:"user",content:prompt}] })
       });
       const data = await res.json();
       const text = data.content?.map(c => c.text||"").join("") || "[]";
@@ -997,8 +1004,6 @@ export default function App() {
       const m  = await storeGet("q26:matches");
       const pr = await storeGet("q26:predictions");
       const sp = await storeGet("q26:specials");
-      const msgs = await storeGet("q26:messages");
-      if (msgs && msgs.msgs) setMsgs(msgs.msgs);
       if (p)  setParticipants(p);
       if (m)  setMatches(m);
       if (pr) setPredictions(pr);
