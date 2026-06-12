@@ -1067,12 +1067,12 @@ const shareWhatsApp = () => {
     }
   };
 
- const handleLogin = (u) => {
+const handleLogin = (u) => {
     if (!u.isAdmin) {
       var existing = participants.find(function(p) { return p.nickname === u.nickname; });
       if (existing) {
-        u = Object.assignu = Object.assign({}, existing);
-      } else {({},       } else {
+        u = Object.assign({}, existing);
+      } else {
         storeGet("q26:participants").then(function(current) {
           var list = current || [];
           var alreadyExists = list.find(function(p) { return p.nickname === u.nickname; });
@@ -1082,7 +1082,6 @@ const shareWhatsApp = () => {
           }
           setParticipants(list);
         });
-
         fetch("/api/welcome", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
