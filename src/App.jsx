@@ -874,18 +874,13 @@ One for each: ${sorted.map(p=>p.nickname).join(", ")}`;
       console.log(text);
       console.log("===END RAW===");
       
-      var parsed = JSON.parse(text.replace(/```json|```/g,"").trim());
+var parsed = JSON.parse(text.replace(/```json|```/g,"").trim());
       setMsgs(parsed);
       storeSet("q26:messages", { timestamp: new Date().toISOString(), msgs: parsed });
     } catch (e) {
       console.error("ERROR:", e.message);
       console.error("Full error:", e);
       setMsgs([{ nickname:"Sistema", mensaje:"⚽ Error: " + e.message }]);
-    }
-     setMsgs(parsed);
-      storeSet("q26:messages", { timestamp: new Date().toISOString(), msgs: parsed }).catch(() => {});
-    } catch (e) {
-      setMsgs([{ nickname:"Sistema", mensaje:"⚽ El VAR está revisando los mensajes. ¡Intenta de nuevo!" }]);
     }
     setLoading(false);
   };
