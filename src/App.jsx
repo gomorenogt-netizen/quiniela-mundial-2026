@@ -417,7 +417,7 @@ function AuthScreen({ onLogin, toast }) {
                 placeholder="Ej: ElPulgaFan, Golazo99…"
                 value={nick}
                 onChange={e => { setNick(e.target.value); setErr(""); }}
-                maxLength={20}
+                maxLength={40}
               />
               <div>
                 <label className="block text-slate-400 text-xs font-semibold mb-2 uppercase tracking-wider">Tu avatar</label>
