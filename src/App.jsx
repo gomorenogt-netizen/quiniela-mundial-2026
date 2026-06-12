@@ -846,14 +846,14 @@ function AIMessages({ participants, matches, scores }) {
     const played = matches.filter(m => m.played);
     const last = played[played.length - 1];
 
-    const prompt = `Eres el animador de una quiniela mundialista familiar muy divertida. Genera exactamente ${Math.min(participants.length, 5)} mensajes personalizados en español con humor latino, emojis y picardía amigable. Mezcla español con algo de inglés como lo harían latinoamericanos en USA.
+const prompt = `You are "El Animador Mundialista" - the fun host of a family World Cup 2026 prediction pool. Generate exactly ${Math.min(participants.length, 20)} personalized messages. Write each message BILINGUAL - mix Spanish and English naturally like Latinos in Miami would talk. Be funny, use emojis, include friendly trash talk. Reference their scores, positions, and recent predictions.
 
-Tabla actual: ${sorted.map((p,i) => `${i+1}. ${p.avatar}${p.nickname} (${p.score}pts)`).join(", ")}
-${last ? `Último partido: ${last.home} ${last.homeScore}-${last.awayScore} ${last.away}` : "Torneo por comenzar"}
+Current standings: ${sorted.map((p,i) => (i+1) + ". " + p.avatar + p.nickname + " (" + p.score + "pts)").join(", ")}
+${last ? "Last match: " + last.home + " " + last.homeScore + "-" + last.awayScore + " " + last.away : "Tournament starting soon"}
 
-Genera un JSON array sin markdown, sin texto extra:
+Generate a JSON array, no markdown, no extra text:
 [{"nickname":"...","mensaje":"..."}]
-Uno por cada uno de estos participantes: ${sorted.slice(0,5).map(p=>p.nickname).join(", ")}`;
+One for each: ${sorted.map(p=>p.nickname).join(", ")}`;
 
     try {
       const res = await fetch("/api/chat", {
