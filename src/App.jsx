@@ -863,7 +863,9 @@ One for each: ${sorted.map(p=>p.nickname).join(", ")}`;
       });
       const data = await res.json();
       const text = data.content?.map(c => c.text||"").join("") || "[]";
-      setMsgs(JSON.parse(text.replace(/```json|```/g,"").trim()));
+      var parsed = JSON.parse(text.replace(/```json|```/g,"").trim());
+      setMsgs(parsed);
+      storeSet("q26:messages", { timestamp: new Date().toISOString(), msgs: parsed });
     } catch {
       setMsgs([{ nickname:"Sistema", mensaje:"⚽ El VAR está revisando los mensajes. ¡Intenta de nuevo!" }]);
     }
