@@ -14,7 +14,7 @@ const PHASES = {
   final:   { label: "Gran Final",       multiplier: 10, emoji: "👑", color: "amber"   },
 };
 
-const SCORING = { resultado: 3, marcadorExacto: 7, campeon: 25, subcampeon: 15, goleador: 20 };
+const SCORING = { resultado: 3, diferencia: 3, marcadorExacto: 4, campeon: 25, subcampeon: 15, goleador: 20 };
 
 const AVATAR_EMOJIS = [
   "🦁","🦊","🐯","🦅","🐺","🦋","🐸","🦄","🐲","🐬",
@@ -293,6 +293,7 @@ function calcScores(participants, matches, predictions) {
       let pts = 0;
       if (pR === aR) {
         pts += SCORING.resultado;
+        if ((pred.h - pred.a) === (m.homeScore - m.awayScore)) pts += SCORING.diferencia;
         if (pred.h === m.homeScore && pred.a === m.awayScore) pts += SCORING.marcadorExacto;
       }
       const earned = pts * mult * joker;
