@@ -866,19 +866,22 @@ One for each: ${sorted.map(p=>p.nickname).join(", ")}`;
       const res = await fetch("/api/chat", {
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:1000, messages:[{role:"user",content:prompt}] })
+        body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:2000, messages:[{role:"user",content:prompt}] })
       });
       const data = await res.json();
-const text = data.content?.map(c => c.text||"").join("") || "[]";
-console.log("Raw text from API:", text.substring(0, 200));
-try {
-  var parsed = JSON.parse(text.replace(/```json|```/g,"").trim());
-} catch (e) {
-  console.error("JSON parse error:", e, "Text was:", text.substring(0, 500));
-  setMsgs([{ nickname:"Sistema", mensaje:"⚽ Error parseando JSON de la IA. Intenta de nuevo!" }]);
-  setLoading(false);
-  return;
-}
+      const text = data.content?.map(c => c.text||"").join("") || "[]";
+      console.log("===RAW RESPONSE FROM API===");
+      console.log(text);
+      console.log("===END RAW===");
+      
+      var parsed = JSON.parse(text.replace(/```json|```/g,"").trim());
+      setMsgs(parsed);
+      storeSet("q26:messages", { timestamp: new Date().toISOString(), msgs: parsed });
+    } catch (e) {
+      console.error("ERROR:", e.message);
+      console.error("Full error:", e);
+      setMsgs([{ nickname:"Sistema", mensaje:"⚽ Error: " + e.message }]);
+    }
       setMsgs(parsed);
       storeSet("q26:messages", { timestamp: new Date().toISOString(), msgs: parsed });
     } catch {
