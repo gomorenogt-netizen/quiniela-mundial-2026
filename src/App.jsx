@@ -853,9 +853,8 @@ function AIMessages({ participants, matches, scores, isAdmin }) {
     const played = matches.filter(m => m.played);
     const last = played[played.length - 1];
 
-const prompt = `You are "El Animador Mundialista" - the fun host of a family World Cup 2026 prediction pool. Generate exactly ${Math.min(participants.length, 12)} personalized messages. Write each message BILINGUAL - mix Spanish and English naturally like Latinos in Miami would talk. Be funny, use emojis, include friendly trash talk. Reference their scores, positions, and recent predictions. Keep each message under 25 words.
-
-Current standings: ${sorted.map((p,i) => (i+1) + ". " + p.avatar + p.nickname + " (" + p.score + "pts)").join(", ")}
+const prompt = `Eres el animador de una quiniela mundialista. Genera exactamente ${Math.min(participants.length, 12)} mensajes cortos (max 15 palabras cada uno) en spanglish estilo Miami. Con emojis y humor. Tabla: ${sorted.slice(0,12).map((p,i)=>(i+1)+"."+p.nickname+"("+p.score+"pts)").join(",")}. Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
+    Current standings: ${sorted.map((p,i) => (i+1) + ". " + p.avatar + p.nickname + " (" + p.score + "pts)").join(", ")}
 ${last ? "Last match: " + last.home + " " + last.homeScore + "-" + last.awayScore + " " + last.away : "Tournament starting soon"}
 
 Generate a JSON array, no markdown, no extra text:
@@ -866,7 +865,7 @@ For: ${sorted.slice(0, Math.min(participants.length, 12)).map(p=>p.nickname).joi
       const res = await fetch("/api/chat", {
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:4000, messages:[{role:"user",content:prompt}] })
+        body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:1000, messages:[{role:"user",content:prompt}] })
       });
       const data = await res.json();
       const text = data.content?.map(c => c.text||"").join("") || "[]";
