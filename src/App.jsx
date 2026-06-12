@@ -997,6 +997,8 @@ export default function App() {
       const m  = await storeGet("q26:matches");
       const pr = await storeGet("q26:predictions");
       const sp = await storeGet("q26:specials");
+      const msgs = await storeGet("q26:messages");
+      if (msgs && msgs.msgs) setMsgs(msgs.msgs);
       if (p)  setParticipants(p);
       if (m)  setMatches(m);
       if (pr) setPredictions(pr);
