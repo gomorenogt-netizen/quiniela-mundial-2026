@@ -881,6 +881,8 @@ Participantes (nombre, puntos, genero, resultado_ultimo_partido, idioma_a_usar):
 ${playersWithResults}
 
 Reglas de idioma:
+Nota especial: "Aurora Y Moose" es una chica con su perro salchicha Moose (haired dachshund in English). Menciona al perro  en su mensaje para hacerlo gracioso.
+Nota especial: "Mundi2026&" es mexicana, siempre usar estilo mexicano con ella (por ejemplo: No mamcnes, órale, chingón, no manches, wey).
 - chapin: español guatemalteco (vos, shumo, vieras que, no jodas, que chivo)
 - mexicano: español mexicano (órale, chido, no manches, wey, híjole)  
 - spanglish: mezcla natural español/inglés estilo Miami
