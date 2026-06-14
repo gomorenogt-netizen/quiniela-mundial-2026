@@ -561,7 +561,7 @@ function Leaderboard({ participants, scores, currentPhase, currentUser }) {
                   {isTop3 ? medals[rank-1] : rank}
                 </span>
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-xl flex-shrink-0">{p.avatar}</span>
+                  <span className="text-3xl flex-shrink-0">{p.avatar}</span>
                   <div className="min-w-0">
                     <p className={`font-semibold text-sm truncate ${isMe ? "text-emerald-300" : "text-white"}`}>
                       {p.nickname}{isMe && <span className="text-emerald-500 text-xs ml-1">·tú</span>}
