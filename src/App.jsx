@@ -1054,7 +1054,7 @@ export default function App() {
   }, []);
 
   // ── Persist on change ──
-  useEffect(() => { if (loaded) storeSet("q26:participants", participants); }, [participants, loaded]);
+  
   useEffect(() => { if (loaded) storeSet("q26:matches",      matches);      }, [matches,      loaded]);
   useEffect(() => { if (loaded) storeSet("q26:specials",     specials);     }, [specials,      loaded]);
 
