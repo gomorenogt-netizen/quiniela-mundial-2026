@@ -852,8 +852,49 @@ function AIMessages({ participants, matches, scores, isAdmin }) {
       .sort((a,b) => b.score - a.score);
     const played = matches.filter(m => m.played);
     const last = played[played.length - 1];
+const lastMatch = last ? `Ultimo partido: ${last.home} ${last.homeScore}-${last.awayScore} ${last.away}` : "Torneo por comenzar";
+const lastMatchId = last ? last.id : null;
+const resultados = lastMatchId ? sorted.slice(0,12).map(p => {
+  const pred = Object.keys(scores).length > 0 ? null : null;
+  const key = p.id + "::" + lastMatchId;
+  return p.nickname;
+}).join(",") : "";
 
-const prompt = `Eres el animador de una quiniela mundialista. Genera exactamente ${Math.min(participants.length, 12)} mensajes cortos (max 30 palabras cada uno) en spanglish estilo Miami. Con emojis y humor. Miami. Toma encuenta Aurora y Moose son una señorita (Aurora) y Moose es su perro haired dachshund (male). Also, don't use aguacate too often. Let's call those participants out, cheer them and make it fun, this is a competition. Tabla: ${sorted.slice(0,12).map((p,i)=>(i+1)+"."+p.nickname+"("+p.score+"pts,"+(p.gender||"M")+")").join(",")}. M=male F=female AI=artificial intelligence. Use correct gender in Spanish.. Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
+const playersWithResults = lastMatchId ? sorted.slice(0,12).map(p => {
+  const key = p.id + "::" + lastMatchId;
+  const allPreds = window._q26preds || {};
+  const pred = allPreds[key];
+  const aR = last.homeScore > last.awayScore ? "H" : last.awayScore > last.homeScore ? "A" : "D";
+  const pR = pred ? (pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D") : null;
+  const exact = pred && pred.h === last.homeScore && pred.a === last.awayScore;
+  const correct = pR && pR === aR;
+  const result = !pred ? "no_pred" : exact ? "exact" : correct ? "correct" : "wrong";
+  const styles = ["chapin","mexicano","spanglish","english"];
+  const style = styles[Math.floor(Math.random() * styles.length)];
+  return p.nickname+"("+p.score+"pts,"+( p.gender||"M")+","+result+","+style+")";
+}).join(", ") : sorted.slice(0,12).map((p,i) => p.nickname+"("+p.score+"pts,"+(p.gender||"M")+")").join(", ");
+
+const prompt = `Eres "El Animador Mundialista" de una quiniela familiar del Mundial 2026. Genera exactamente ${Math.min(participants.length, 12)} mensajes personalizados, max 25 palabras cada uno.
+
+${lastMatch}
+Participantes (nombre, puntos, genero, resultado_ultimo_partido, idioma_a_usar):
+${playersWithResults}
+
+Reglas de idioma:
+- chapin: español guatemalteco (vos, shumo, vieras que, no jodas, que chivo)
+- mexicano: español mexicano (órale, chido, no manches, wey, híjole)  
+- spanglish: mezcla natural español/inglés estilo Miami
+- english: full English Miami style (casual, funny, with some Spanish words)
+
+Reglas de resultado:
+- exact: acertó marcador exacto → felicitarlo exageradamente y burlarse de los demás
+- correct: acertó ganador → elogio moderado
+- wrong: falló → burla amigable
+- no_pred: no puso predicción → regañarlo
+
+Usa el género correcto en español. Con emojis y humor amigable.
+Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
+
     try {
       const res = await fetch("/api/chat", {
         method:"POST",
