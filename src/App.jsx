@@ -1440,9 +1440,8 @@ const handleLogin = (u) => {
         )}
 
         {tab === "mensajes" && (
-{tab === "mensajes" && (
-  <AIMessages participants={participants} matches={matches} scores={scores} isAdmin={user.isAdmin} predictions={predictions} />
-)}
+          <AIMessages participants={participants} matches={matches} scores={scores} isAdmin={user.isAdmin} predictions={predictions} />
+        )}
 
         {tab === "admin" && user.isAdmin && (
           <>
