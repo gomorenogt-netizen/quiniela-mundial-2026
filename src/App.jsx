@@ -834,7 +834,7 @@ function SpecialPreds({ user, specials, onSave }) {
 // ============================================================
 // AI MESSAGES
 // ============================================================
-function AIMessages({ participants, matches, scores, isAdmin }) {
+function AIMessages({ participants, matches, scores, isAdmin, predictions }) {
   const [msgs, setMsgs] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -862,7 +862,7 @@ const resultados = lastMatchId ? sorted.slice(0,12).map(p => {
 
 const playersWithResults = lastMatchId ? sorted.slice(0,12).map(p => {
   const key = p.id + "::" + lastMatchId;
-  const allPreds = window._q26preds || {};
+  const allPreds = predictions || {};
   const pred = allPreds[key];
   const aR = last.homeScore > last.awayScore ? "H" : last.awayScore > last.homeScore ? "A" : "D";
   const pR = pred ? (pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D") : null;
@@ -1440,7 +1440,8 @@ const handleLogin = (u) => {
         )}
 
         {tab === "mensajes" && (
-  <AIMessages participants={participants} matches={matches} scores={scores} isAdmin={user.isAdmin} />
+{tab === "mensajes" && (
+  <AIMessages participants={participants} matches={matches} scores={scores} isAdmin={user.isAdmin} predictions={predictions} />
 )}
 
         {tab === "admin" && user.isAdmin && (
