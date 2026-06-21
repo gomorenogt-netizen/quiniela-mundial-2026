@@ -1070,6 +1070,9 @@ export default function App() {
       }, 300);
     }
   }, [tab]);
+
+  useEffect(() => {
+    if (!liveRefresh) return;
     const id = setInterval(() => showToast("🔄 Resultados actualizados", "info"), 60000);
     return () => clearInterval(id);
   }, [liveRefresh]);
