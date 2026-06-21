@@ -1035,6 +1035,7 @@ export default function App() {
   const [loaded, setLoaded]           = useState(false);
   const [liveRefresh, setLiveRefresh] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("all");
+  const nextMatchId = matches.find(m => !m.played)?.id;
 
   const scores = calcScores(participants, matches, predictions);
 
@@ -1289,13 +1290,15 @@ const handleLogin = (u) => {
                 <p className="text-sm">Los partidos de esta fase aparecerán pronto</p>
               </div>
             )}
-            {phaseMatches.map(m => (
-              <MatchCard key={m.id} match={m} user={meAsParticipant || user}
-                prediction={predictions[`${user.id}::${m.id}`]}
-                onPredict={handlePredict} onSetResult={handleSetResult}
-                isAdmin={user.isAdmin}
-                participants={participants} allPredictions={predictions} />
-            ))}
+          {phaseMatches.map(m => (
+  <div key={m.id} id={m.id === nextMatchId ? "next-match" : undefined}>
+    <MatchCard match={m} user={meAsParticipant || user}
+      prediction={predictions[`${user.id}::${m.id}`]}
+      onPredict={handlePredict} onSetResult={handleSetResult}
+      isAdmin={user.isAdmin}
+      participants={participants} allPredictions={predictions} />
+  </div>
+))}
         </div>
         )}
         {tab === "llaves" && (
