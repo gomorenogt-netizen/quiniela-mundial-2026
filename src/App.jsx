@@ -1296,14 +1296,8 @@ const handleLogin = (u) => {
                 isAdmin={user.isAdmin}
                 participants={participants} allPredictions={predictions} />
             ))}
-                prediction={predictions[`${user.id}::${m.id}`]}
-                onPredict={handlePredict} onSetResult={handleSetResult}
-                isAdmin={user.isAdmin}
-                participants={participants} allPredictions={predictions} />
-            ))}
-          </div>
+        </div>
         )}
-
         {tab === "llaves" && (
           <div className="space-y-5">
             {/* Groups overview */}
