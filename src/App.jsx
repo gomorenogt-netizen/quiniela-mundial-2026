@@ -1062,8 +1062,14 @@ export default function App() {
   // ── Live-score polling simulation ──
   // (In production, connect to football-data.org API with your key)
   // We show the architecture but don't expose API keys here.
-  useEffect(() => {
-    if (!liveRefresh) return;
+ useEffect(() => {
+    if (tab === "partidos") {
+      setTimeout(() => {
+        const el = document.getElementById("next-match");
+        if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
+      }, 300);
+    }
+  }, [tab]);
     const id = setInterval(() => showToast("🔄 Resultados actualizados", "info"), 60000);
     return () => clearInterval(id);
   }, [liveRefresh]);
