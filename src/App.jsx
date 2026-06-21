@@ -1289,18 +1289,13 @@ const handleLogin = (u) => {
                 <p className="text-sm">Los partidos de esta fase aparecerán pronto</p>
               </div>
             )}
-            {phaseMatches.map(m => {
-              const isNext = !m.played && phaseMatches.find(pm => !pm.played)?.id === m.id;
-              return (
-              <div key={m.id} ref={isNext ? (el => { if (el && tab === "partidos") el.scrollIntoView({ behavior:"smooth", block:"start" }) }) : null}>
-              <MatchCard match={m} user={meAsParticipant || user}
+            {phaseMatches.map(m => (
+              <MatchCard key={m.id} match={m} user={meAsParticipant || user}
                 prediction={predictions[`${user.id}::${m.id}`]}
                 onPredict={handlePredict} onSetResult={handleSetResult}
                 isAdmin={user.isAdmin}
                 participants={participants} allPredictions={predictions} />
-              </div>
-              );
-            })}
+            ))}
                 prediction={predictions[`${user.id}::${m.id}`]}
                 onPredict={handlePredict} onSetResult={handleSetResult}
                 isAdmin={user.isAdmin}
