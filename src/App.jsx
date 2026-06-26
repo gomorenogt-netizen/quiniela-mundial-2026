@@ -1160,7 +1160,11 @@ const handleLogin = (u) => {
 const handlePredict = (matchId, pred) => {
     const key = `${user.id}::${matchId}`;
     setPredictions(prev => ({ ...prev, [key]: pred }));
-    dbSet("quiniela/q26:predictions/" + key.replace(/[.#$/\[\]]/g, "_"), pred);
+    storeGet("q26:predictions").then(function(current) {
+      var all = current || {};
+      all[key] = pred;
+      storeSet("q26:predictions", all);
+    });
     showToast("✅ Predicción guardada");
   };
 
