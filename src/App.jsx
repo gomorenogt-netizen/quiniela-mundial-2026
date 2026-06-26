@@ -1157,14 +1157,10 @@ const handleLogin = (u) => {
     setTab(u.isAdmin ? "admin" : "tabla");
   };
        
- const handlePredict = (matchId, pred) => {
+const handlePredict = (matchId, pred) => {
     const key = `${user.id}::${matchId}`;
     setPredictions(prev => ({ ...prev, [key]: pred }));
-    storeGet("q26:predictions").then(function(current) {
-      var all = current || {};
-      all[key] = pred;
-      storeSet("q26:predictions", all);
-    });
+    dbSet("quiniela/q26:predictions/" + key.replace(/[.#$/\[\]]/g, "_"), pred);
     showToast("✅ Predicción guardada");
   };
 
