@@ -678,23 +678,28 @@ const isKnockout = match.phase !== "grupos";
             <input type="number" min="0" max="20" value={pa} onChange={e => { setPa(e.target.value); setDirty(true); }}
               className="w-14 text-center bg-slate-800 border border-slate-700 text-white rounded-xl py-2 text-lg font-black focus:outline-none focus:border-emerald-500" placeholder="0" />
          {isKnockout && parseInt(ph) === parseInt(pa) && ph !== "" && (
-  <div className="flex gap-2 justify-center mb-2">
-    <button onClick={() => { setAvanza(match.home); setDirty(true); }}
-      className={`flex-1 text-xs font-bold py-2 px-3 rounded-xl border transition-all ${avanza === match.home ? "bg-emerald-600 text-white border-emerald-500" : "border-slate-600 text-slate-400 hover:border-emerald-600"}`}>
-      {match.homeFlag} {match.home}
-    </button>
-    <button onClick={() => { setAvanza(match.away); setDirty(true); }}
-      className={`flex-1 text-xs font-bold py-2 px-3 rounded-xl border transition-all ${avanza === match.away ? "bg-emerald-600 text-white border-emerald-500" : "border-slate-600 text-slate-400 hover:border-emerald-600"}`}>
-      {match.awayFlag} {match.away}
-    </button>
+  <div className="mt-2">
+    <p className="text-amber-400 text-xs text-center font-bold mb-2 animate-pulse">
+      ⚽ Empate en 90 min — ¿Quién avanza?
+    </p>
+    <div className="flex gap-2">
+      <button onClick={() => { setAvanza(match.home); setDirty(true); }}
+        className={`flex-1 text-xs font-bold py-2 px-3 rounded-xl border transition-all ${avanza === match.home ? "bg-emerald-600 text-white border-emerald-500" : "border-slate-600 text-slate-400 hover:border-emerald-600"}`}>
+        {match.homeFlag} {match.home}
+      </button>
+      <button onClick={() => { setAvanza(match.away); setDirty(true); }}
+        className={`flex-1 text-xs font-bold py-2 px-3 rounded-xl border transition-all ${avanza === match.away ? "bg-emerald-600 text-white border-emerald-500" : "border-slate-600 text-slate-400 hover:border-emerald-600"}`}>
+        {match.awayFlag} {match.away}
+      </button>
+    </div>
   </div>
 )}
 <button
   onClick={() => {
     if (ph !== "" && pa !== "") {
+      if (isKnockout && parseInt(ph) === parseInt(pa) && !avanza) return;
       const pred = { h: parseInt(ph), a: parseInt(pa) };
       if (isKnockout && parseInt(ph) === parseInt(pa)) {
-        if (!avanza) { alert("Selecciona quién avanza"); return; }
         pred.avanza = avanza;
       } else if (isKnockout) {
         pred.avanza = parseInt(ph) > parseInt(pa) ? match.home : match.away;
@@ -703,7 +708,13 @@ const isKnockout = match.phase !== "grupos";
       setDirty(false);
     }
   }}
-  className={`font-bold px-4 py-2 rounded-xl text-sm transition-all text-white ${dirty ? "bg-amber-500 hover:bg-amber-400 animate-pulse" : "bg-emerald-600 hover:bg-emerald-500"}`}
+  disabled={isKnockout && parseInt(ph) === parseInt(pa) && ph !== "" && !avanza}
+  className={`font-bold px-4 py-2 rounded-xl text-sm transition-all text-white ${
+    isKnockout && parseInt(ph) === parseInt(pa) && ph !== "" && !avanza
+      ? "bg-slate-700 opacity-50 cursor-not-allowed"
+      : dirty ? "bg-amber-500 hover:bg-amber-400 animate-pulse" 
+      : "bg-emerald-600 hover:bg-emerald-500"
+  }`}
 >
   {dirty ? "⚠️ Guardar" : prediction ? "✏️ Guardado" : "✅ Guardar"}
 </button>
