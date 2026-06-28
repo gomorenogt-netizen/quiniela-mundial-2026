@@ -288,14 +288,18 @@ function calcScores(participants, matches, predictions) {
       if (!pred) return;
       const mult = PHASES[m.phase].multiplier;
       const joker = p.usedJoker?.[m.phase] === m.id ? 2 : 1;
-      const aR = m.homeScore > m.awayScore ? "H" : m.awayScore > m.homeScore ? "A" : "D";
-      const pR = pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D";
-      let pts = 0;
-      if (pR === aR) {
-        pts += SCORING.resultado;
-        if ((pred.h - pred.a) === (m.homeScore - m.awayScore)) pts += SCORING.diferencia;
-        if (pred.h === m.homeScore && pred.a === m.awayScore) pts += SCORING.marcadorExacto;
-      }
+    const isKnockout = m.phase !== "grupos";
+const aWinner = m.homeScore > m.awayScore ? m.home : m.awayScore > m.homeScore ? m.away : m.avanza;
+const pWinner = pred.h > pred.a ? m.home : pred.a > pred.h ? m.away : pred.avanza;
+const aR = m.homeScore > m.awayScore ? "H" : m.awayScore > m.homeScore ? "A" : "D";
+const pR = pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D";
+let pts = 0;
+const correctWinner = isKnockout ? (pWinner === aWinner) : (pR === aR);
+if (correctWinner) {
+  pts += SCORING.resultado;
+  if ((pred.h - pred.a) === (m.homeScore - m.awayScore)) pts += SCORING.diferencia;
+  if (pred.h === m.homeScore && pred.a === m.awayScore) pts += SCORING.marcadorExacto;
+}
       const earned = pts * mult * joker;
       total += earned;
       byPhase[m.phase] += earned;
@@ -593,9 +597,11 @@ function Leaderboard({ participants, scores, currentPhase, currentUser }) {
 function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin, participants, allPredictions }) {
 const [ph, setPh] = useState(prediction?.h ?? "");
 const [pa, setPa] = useState(prediction?.a ?? "");
-const [dirty, setDirty] = useState(false);
-  const [rh, setRh] = useState(match.homeScore ?? "");
-  const [ra, setRa] = useState(match.awayScore ?? "");
+const [avanza, setAvanza] = useState(prediction?.avanza ?? "");
+const [rh, setRh] = useState(match.homeScore ?? "");
+const [ra, setRa] = useState(match.awayScore ?? "");
+const [ravanza, setRavanza] = useState(match.avanza ?? "");
+const isKnockout = match.phase !== "grupos";
 
   const phase = PHASES[match.phase];
   const joker = user?.usedJoker?.[match.phase] === match.id;
@@ -668,8 +674,32 @@ const [dirty, setDirty] = useState(false);
             <span className="text-slate-600 font-black text-xl">—</span>
             <input type="number" min="0" max="20" value={pa} onChange={e => { setPa(e.target.value); setDirty(true); }}
               className="w-14 text-center bg-slate-800 border border-slate-700 text-white rounded-xl py-2 text-lg font-black focus:outline-none focus:border-emerald-500" placeholder="0" />
-           <button
-  onClick={() => { if (ph !== "" && pa !== "") { onPredict(match.id, { h: parseInt(ph), a: parseInt(pa) }); setDirty(false); }}}
+         {isKnockout && parseInt(ph) === parseInt(pa) && ph !== "" && (
+  <div className="flex gap-2 justify-center mb-2">
+    <button onClick={() => { setAvanza(match.home); setDirty(true); }}
+      className={`flex-1 text-xs font-bold py-2 px-3 rounded-xl border transition-all ${avanza === match.home ? "bg-emerald-600 text-white border-emerald-500" : "border-slate-600 text-slate-400 hover:border-emerald-600"}`}>
+      {match.homeFlag} {match.home}
+    </button>
+    <button onClick={() => { setAvanza(match.away); setDirty(true); }}
+      className={`flex-1 text-xs font-bold py-2 px-3 rounded-xl border transition-all ${avanza === match.away ? "bg-emerald-600 text-white border-emerald-500" : "border-slate-600 text-slate-400 hover:border-emerald-600"}`}>
+      {match.awayFlag} {match.away}
+    </button>
+  </div>
+)}
+<button
+  onClick={() => {
+    if (ph !== "" && pa !== "") {
+      const pred = { h: parseInt(ph), a: parseInt(pa) };
+      if (isKnockout && parseInt(ph) === parseInt(pa)) {
+        if (!avanza) { alert("Selecciona quién avanza"); return; }
+        pred.avanza = avanza;
+      } else if (isKnockout) {
+        pred.avanza = parseInt(ph) > parseInt(pa) ? match.home : match.away;
+      }
+      onPredict(match.id, pred);
+      setDirty(false);
+    }
+  }}
   className={`font-bold px-4 py-2 rounded-xl text-sm transition-all text-white ${dirty ? "bg-amber-500 hover:bg-amber-400 animate-pulse" : "bg-emerald-600 hover:bg-emerald-500"}`}
 >
   {dirty ? "⚠️ Guardar" : prediction ? "✏️ Guardado" : "✅ Guardar"}
@@ -703,23 +733,35 @@ const [dirty, setDirty] = useState(false);
       )}
       {/* Admin result entry */}
       {isAdmin && !match.played && (
-        <div className="border-t border-amber-900/40 px-4 py-3 bg-amber-950/20">
-          <p className="text-amber-500 text-xs text-center font-bold mb-2">🔧 Cargar resultado oficial</p>
-          <div className="flex items-center gap-2 justify-center">
-            <input type="number" min="0" max="20" value={rh} onChange={e => setRh(e.target.value)}
-              className="w-14 text-center bg-slate-800 border border-amber-700/50 text-amber-300 rounded-xl py-2 text-lg font-black focus:outline-none" />
-            <span className="text-amber-700 font-black">—</span>
-            <input type="number" min="0" max="20" value={ra} onChange={e => setRa(e.target.value)}
-              className="w-14 text-center bg-slate-800 border border-amber-700/50 text-amber-300 rounded-xl py-2 text-lg font-black focus:outline-none" />
-            <button
-              onClick={() => { if (rh !== "" && ra !== "") onSetResult(match.id, parseInt(rh), parseInt(ra)); }}
-              className="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all"
-            >
-              ⚡ Confirmar
-            </button>
-          </div>
-        </div>
-      )}
+  <div className="border-t border-amber-900/40 px-4 py-3 bg-amber-950/20">
+    <p className="text-amber-500 text-xs text-center font-bold mb-2">🔧 Cargar resultado oficial</p>
+    <div className="flex items-center gap-2 justify-center">
+      <input type="number" min="0" max="20" value={rh} onChange={e => setRh(e.target.value)}
+        className="w-14 text-center bg-slate-800 border border-amber-700/50 text-amber-300 rounded-xl py-2 text-lg font-black focus:outline-none" />
+      <span className="text-amber-700 font-black">—</span>
+      <input type="number" min="0" max="20" value={ra} onChange={e => setRa(e.target.value)}
+        className="w-14 text-center bg-slate-800 border border-amber-700/50 text-amber-300 rounded-xl py-2 text-lg font-black focus:outline-none" />
+      <button
+        onClick={() => { if (rh !== "" && ra !== "") onSetResult(match.id, parseInt(rh), parseInt(ra), ravanza || null); }}
+        className="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all"
+      >
+        ⚡ Confirmar
+      </button>
+    </div>
+    {isKnockout && parseInt(rh) === parseInt(ra) && rh !== "" && (
+      <div className="flex gap-2 mt-2">
+        <button onClick={() => setRavanza(match.home)}
+          className={`flex-1 text-xs font-bold py-2 rounded-xl border transition-all ${ravanza === match.home ? "bg-amber-600 text-white border-amber-500" : "border-slate-600 text-slate-400"}`}>
+          {match.homeFlag} {match.home}
+        </button>
+        <button onClick={() => setRavanza(match.away)}
+          className={`flex-1 text-xs font-bold py-2 rounded-xl border transition-all ${ravanza === match.away ? "bg-amber-600 text-white border-amber-500" : "border-slate-600 text-slate-400"}`}>
+          {match.awayFlag} {match.away}
+        </button>
+      </div>
+    )}
+  </div>
+)}
     </div>
   );
 }
@@ -1170,8 +1212,12 @@ const handlePredict = (matchId, pred) => {
     showToast("✅ Predicción guardada");
   };
 
-  const handleSetResult = (matchId, h, a) => {
-    setMatches(prev => prev.map(m => m.id === matchId ? { ...m, homeScore:h, awayScore:a, played:true } : m));
+  const handleSetResult = (matchId, h, a, avanza) => {
+    setMatches(prev => prev.map(m => {
+      if (m.id !== matchId) return m;
+      const winner = h > a ? m.home : a > h ? m.away : avanza;
+      return { ...m, homeScore:h, awayScore:a, played:true, avanza: winner };
+    }));
     showToast("⚡ Resultado cargado", "warn");
   };
 
