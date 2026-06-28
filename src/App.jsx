@@ -1075,13 +1075,13 @@ export default function App() {
   const [matches, setMatches]         = useState(SEED_MATCHES.map(m => ({ ...m, played:false, homeScore:null, awayScore:null })));
   const [predictions, setPredictions] = useState({});
   const [specials, setSpecials]       = useState({});
- const getCurrentPhase = () => {
+  const getCurrentPhase = () => {
     const now = new Date();
     const phases = [
       { phase: "final",   start: new Date("2026-07-19") },
       { phase: "semis",   start: new Date("2026-07-14") },
       { phase: "cuartos", start: new Date("2026-07-09") },
-      { phase: "octavos", start: new Date("2026-07-04") },
+      { phase: "octavos", start: new Date("2026-06-28") },
       { phase: "grupos",  start: new Date("2026-06-11") },
     ];
     for (var i = 0; i < phases.length; i++) {
