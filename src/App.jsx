@@ -598,6 +598,7 @@ function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin, p
 const [ph, setPh] = useState(prediction?.h ?? "");
 const [pa, setPa] = useState(prediction?.a ?? "");
 const [avanza, setAvanza] = useState(prediction?.avanza ?? "");
+const [dirty, setDirty] = useState(false);
 const [rh, setRh] = useState(match.homeScore ?? "");
 const [ra, setRa] = useState(match.awayScore ?? "");
 const [ravanza, setRavanza] = useState(match.avanza ?? "");
