@@ -1159,10 +1159,11 @@ const handleLogin = (u) => {
        
 const handlePredict = (matchId, pred) => {
     const key = `${user.id}::${matchId}`;
-    setPredictions(prev => ({ ...prev, [key]: pred }));
+    const predWithTs = { h: pred.h, a: pred.a, ts: new Date().toISOString() };
+    setPredictions(prev => ({ ...prev, [key]: predWithTs }));
     storeGet("q26:predictions").then(function(current) {
       var all = current || {};
-      all[key] = pred;
+      all[key] = predWithTs;
       storeSet("q26:predictions", all);
     });
     showToast("✅ Predicción guardada");
