@@ -711,7 +711,7 @@ const isKnockout = match.phase !== "grupos";
         </div>
       )}
 {/* Comparison — show all predictions after match is played */}
-      {match.played && participants && participants.length > 0 && (
+     {(match.played || new Date() > new Date(match.date + "T" + match.time + ":00-04:00")) && participants && participants.length > 0 && (
         <div className="border-t border-slate-800 px-4 py-3">
           <p className="text-slate-500 text-xs font-bold mb-2">📊 Predicciones de todos:</p>
           <div className="space-y-1.5">
