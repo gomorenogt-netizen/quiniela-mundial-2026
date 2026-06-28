@@ -1095,7 +1095,7 @@ const [currentPhase, setCurrentPhase] = useState("grupos");
   const [loaded, setLoaded]           = useState(false);
   const [liveRefresh, setLiveRefresh] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("all");
-  const nextMatchId = matches.find(m => !m.played)?.id;
+const nextMatchId = matches.find(m => !m.played && m.phase === currentPhase)?.id;
 
   const scores = calcScores(participants, matches, predictions);
 
@@ -1122,14 +1122,14 @@ const [currentPhase, setCurrentPhase] = useState("grupos");
   // ── Live-score polling simulation ──
   // (In production, connect to football-data.org API with your key)
   // We show the architecture but don't expose API keys here.
- useEffect(() => {
+useEffect(() => {
     if (tab === "partidos") {
       setTimeout(() => {
         const el = document.getElementById("next-match");
         if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
-      }, 300);
+      }, 500);
     }
-  }, [tab]);
+  }, [tab, currentPhase]);
 
   useEffect(() => {
     if (!liveRefresh) return;
