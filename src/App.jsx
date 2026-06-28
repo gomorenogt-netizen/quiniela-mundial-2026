@@ -591,8 +591,9 @@ function Leaderboard({ participants, scores, currentPhase, currentUser }) {
 // MATCH CARD
 // ============================================================
 function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin, participants, allPredictions }) {
-  const [ph, setPh] = useState(prediction?.h ?? "");
-  const [pa, setPa] = useState(prediction?.a ?? "");
+const [ph, setPh] = useState(prediction?.h ?? "");
+const [pa, setPa] = useState(prediction?.a ?? "");
+const [dirty, setDirty] = useState(false);
   const [rh, setRh] = useState(match.homeScore ?? "");
   const [ra, setRa] = useState(match.awayScore ?? "");
 
@@ -662,17 +663,17 @@ function MatchCard({ match, user, prediction, onPredict, onSetResult, isAdmin, p
             {prediction ? `Tu predicción: ${prediction.h}–${prediction.a} · Editar:` : "Tu predicción:"}
           </p>
           <div className="flex items-center gap-2 justify-center">
-            <input type="number" min="0" max="20" value={ph} onChange={e => setPh(e.target.value)}
+            <input type="number" min="0" max="20" value={ph} onChange={e => { setPh(e.target.value); setDirty(true); }}
               className="w-14 text-center bg-slate-800 border border-slate-700 text-white rounded-xl py-2 text-lg font-black focus:outline-none focus:border-emerald-500" placeholder="0" />
             <span className="text-slate-600 font-black text-xl">—</span>
-            <input type="number" min="0" max="20" value={pa} onChange={e => setPa(e.target.value)}
+            <input type="number" min="0" max="20" value={pa} onChange={e => { setPa(e.target.value); setDirty(true); }}
               className="w-14 text-center bg-slate-800 border border-slate-700 text-white rounded-xl py-2 text-lg font-black focus:outline-none focus:border-emerald-500" placeholder="0" />
-            <button
-              onClick={() => { if (ph !== "" && pa !== "") onPredict(match.id, { h: parseInt(ph), a: parseInt(pa) }); }}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all"
-            >
-              {prediction ? "✏️" : "✅"} Guardar
-            </button>
+           <button
+  onClick={() => { if (ph !== "" && pa !== "") { onPredict(match.id, { h: parseInt(ph), a: parseInt(pa) }); setDirty(false); }}}
+  className={`font-bold px-4 py-2 rounded-xl text-sm transition-all text-white ${dirty ? "bg-amber-500 hover:bg-amber-400 animate-pulse" : "bg-emerald-600 hover:bg-emerald-500"}`}
+>
+  {dirty ? "⚠️ Guardar" : prediction ? "✏️ Guardado" : "✅ Guardar"}
+</button>
           </div>
         </div>
       )}
