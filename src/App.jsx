@@ -299,6 +299,8 @@ if (correctWinner) {
   pts += SCORING.resultado;
   if ((pred.h - pred.a) === (m.homeScore - m.awayScore)) pts += SCORING.diferencia;
   if (pred.h === m.homeScore && pred.a === m.awayScore) pts += SCORING.marcadorExacto;
+} else if (isKnockout && (pred.h - pred.a) === (m.homeScore - m.awayScore)) {
+  pts += SCORING.diferencia;
 }
       const earned = pts * mult * joker;
       total += earned;
