@@ -665,9 +665,11 @@ const isKnockout = match.phase !== "grupos";
       {/* Prediction input */}
       {!match.played && !user?.isAdmin && new Date() < new Date(match.date + "T" + match.time.replace(":",":") + ":00-04:00") && (
         <div className="border-t border-slate-800 px-4 py-3">
-          <p className="text-slate-500 text-xs text-center mb-2">
-            {prediction ? `Tu predicción: ${prediction.h}–${prediction.a} · Editar:` : "Tu predicción:"}
-          </p>
+         <p className="text-slate-500 text-xs text-center mb-2">
+  {isKnockout 
+    ? (prediction ? `Tu predicción (90 min): ${prediction.h}–${prediction.a}${prediction.avanza ? " · Avanza: "+prediction.avanza : ""} · Editar:` : "Tu predicción al 90 min:")
+    : (prediction ? `Tu predicción: ${prediction.h}–${prediction.a} · Editar:` : "Tu predicción:")}
+</p>
           <div className="flex items-center gap-2 justify-center">
             <input type="number" min="0" max="20" value={ph} onChange={e => { setPh(e.target.value); setDirty(true); }}
               className="w-14 text-center bg-slate-800 border border-slate-700 text-white rounded-xl py-2 text-lg font-black focus:outline-none focus:border-emerald-500" placeholder="0" />
@@ -735,6 +737,7 @@ const isKnockout = match.phase !== "grupos";
       {isAdmin && !match.played && (
   <div className="border-t border-amber-900/40 px-4 py-3 bg-amber-950/20">
     <p className="text-amber-500 text-xs text-center font-bold mb-2">🔧 Cargar resultado oficial</p>
+{isKnockout && <p className="text-amber-400 text-xs text-center mb-2">⏱️ Marcador al 90 minutos</p>}
     <div className="flex items-center gap-2 justify-center">
       <input type="number" min="0" max="20" value={rh} onChange={e => setRh(e.target.value)}
         className="w-14 text-center bg-slate-800 border border-amber-700/50 text-amber-300 rounded-xl py-2 text-lg font-black focus:outline-none" />
@@ -1072,7 +1075,21 @@ export default function App() {
   const [matches, setMatches]         = useState(SEED_MATCHES.map(m => ({ ...m, played:false, homeScore:null, awayScore:null })));
   const [predictions, setPredictions] = useState({});
   const [specials, setSpecials]       = useState({});
-  const [currentPhase, setCurrentPhase] = useState("grupos");
+ const getCurrentPhase = () => {
+    const now = new Date();
+    const phases = [
+      { phase: "final",   start: new Date("2026-07-19") },
+      { phase: "semis",   start: new Date("2026-07-14") },
+      { phase: "cuartos", start: new Date("2026-07-09") },
+      { phase: "octavos", start: new Date("2026-07-04") },
+      { phase: "grupos",  start: new Date("2026-06-11") },
+    ];
+    for (var i = 0; i < phases.length; i++) {
+      if (now >= phases[i].start) return phases[i].phase;
+    }
+    return "grupos";
+  };
+const [currentPhase, setCurrentPhase] = useState("grupos");
   const [tab, setTab]                 = useState("tabla");
   const [toast, setToast]             = useState(null);
   const [loaded, setLoaded]           = useState(false);
@@ -1293,12 +1310,15 @@ const handlePredict = (matchId, pred) => {
 
           {/* Tabs */}
           <div className="flex gap-1 pb-2 overflow-x-auto">
-            {TABS.map(t => (
-              <button key={t.id} onClick={() => setTab(t.id)}
-                className={`flex-shrink-0 px-3 py-2 rounded-xl text-xs font-bold transition-all ${tab === t.id ? "bg-slate-700 text-white" : "text-slate-600 hover:text-slate-400"}`}>
-                {t.label}
-              </button>
-            ))}
+        {TABS.map(t => (
+  <button key={t.id} onClick={() => {
+    setTab(t.id);
+    if (t.id === "partidos") setCurrentPhase(getCurrentPhase());
+  }}
+    className={`flex-shrink-0 px-3 py-2 rounded-xl text-xs font-bold transition-all ${tab === t.id ? "bg-slate-700 text-white" : "text-slate-600 hover:text-slate-400"}`}>
+    {t.label}
+  </button>
+))}
           </div>
         </div>
       </div>
