@@ -670,7 +670,9 @@ const isKnockout = match.phase !== "grupos";
         <div className="border-t border-slate-800 px-4 py-3">
          <p className="text-slate-500 text-xs text-center mb-2">
   {isKnockout 
-    ? (prediction ? `Tu predicción (90 min): ${prediction.h}–${prediction.a}${prediction.avanza ? " · Avanza: "+prediction.avanza : ""} · Editar:` : "Tu predicción al 90 min:")
+    ? (prediction 
+        ? <span>{prediction.h}–{prediction.a} {prediction.avanza ? <span className="text-emerald-400 font-bold">· ✅ Avanza: {prediction.avanza}</span> : <span className="text-amber-400">· ⚠️ Sin seleccionar quién avanza</span>} · Editar:</span>
+        : "Tu predicción al 90 min:")
     : (prediction ? `Tu predicción: ${prediction.h}–${prediction.a} · Editar:` : "Tu predicción:")}
 </p>
           <div className="flex items-center gap-2 justify-center">
