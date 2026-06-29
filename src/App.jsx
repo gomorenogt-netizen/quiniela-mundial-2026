@@ -1236,6 +1236,7 @@ const handleLogin = (u) => {
 const handlePredict = (matchId, pred) => {
     const key = `${user.id}::${matchId}`;
     const predWithTs = { h: pred.h, a: pred.a, ts: new Date().toISOString() };
+if (pred.avanza) predWithTs.avanza = pred.avanza;
     setPredictions(prev => ({ ...prev, [key]: predWithTs }));
     storeGet("q26:predictions").then(function(current) {
       var all = current || {};
