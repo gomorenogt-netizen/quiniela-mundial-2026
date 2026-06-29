@@ -1236,7 +1236,15 @@ const handleLogin = (u) => {
 const handlePredict = (matchId, pred) => {
     const key = `${user.id}::${matchId}`;
     const predWithTs = { h: pred.h, a: pred.a, ts: new Date().toISOString() };
-if (pred.avanza) predWithTs.avanza = pred.avanza;
+if (pred.avanza) {
+  predWithTs.avanza = pred.avanza;
+} else if (pred.h !== pred.a) {
+  // Auto-asignar quien avanza si no es empate
+  const match = matches.find(m => m.id === matchId);
+  if (match && match.phase !== "grupos") {
+    predWithTs.avanza = pred.h > pred.a ? match.home : match.away;
+  }
+}
     setPredictions(prev => ({ ...prev, [key]: predWithTs }));
     storeGet("q26:predictions").then(function(current) {
       var all = current || {};
