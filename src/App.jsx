@@ -922,6 +922,7 @@ const last = [...played].sort((a, b) => {
 })[0];
 const lastMatch = last ? `Ultimo partido: ${last.home} ${last.homeScore}-${last.awayScore} ${last.away}` : "Torneo por comenzar";
 const lastMatchId = last ? last.id : null;
+    console.log("Last match:", last?.id, last?.home, last?.avanza);
 const resultados = lastMatchId ? sorted.slice(0,12).map(p => {
   const pred = Object.keys(scores).length > 0 ? null : null;
   const key = p.id + "::" + lastMatchId;
