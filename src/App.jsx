@@ -611,8 +611,10 @@ const isKnockout = match.phase !== "grupos";
 
   const aR = match.played ? (match.homeScore > match.awayScore ? "H" : match.awayScore > match.homeScore ? "A" : "D") : null;
   const pR = prediction ? (prediction.h > prediction.a ? "H" : prediction.a > prediction.h ? "A" : "D") : null;
-  const correct = aR && pR && aR === pR;
-  const exact = correct && prediction?.h === match.homeScore && prediction?.a === match.awayScore;
+const aWinner = match.homeScore > match.awayScore ? match.home : match.awayScore > match.homeScore ? match.away : match.avanza;
+const pWinner = prediction?.h > prediction?.a ? match.home : prediction?.a > prediction?.h ? match.away : prediction?.avanza;
+const correct = match.phase !== "grupos" ? (pWinner === aWinner) : (aR && pR && aR === pR);
+const exact = correct && prediction?.h === match.homeScore && prediction?.a === match.awayScore;
 
   let borderClass = "border-slate-800";
   if (match.played && prediction) {
