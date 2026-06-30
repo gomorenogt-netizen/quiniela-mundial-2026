@@ -648,9 +648,9 @@ const exact = correct && prediction?.h === match.homeScore && prediction?.a === 
               <div className="text-white font-black text-3xl tracking-widest">{match.homeScore}–{match.awayScore}</div>
               <div className="mt-1 text-xs">
                 {exact   ? <span className="text-amber-400 font-bold">⭐ ¡Marcador exacto!</span>
-                 : correct ? <span className="text-emerald-400 font-semibold">✓ Resultado correcto</span>
-                 : prediction ? <span className="text-rose-400">✗ No acertaste</span>
-                 : <span className="text-slate-600">Sin predicción</span>}
+ : correct ? <span className="text-emerald-400 font-semibold">✓ {match.phase !== "grupos" && prediction?.h === prediction?.a ? "¡Acertaste quién avanza!" : "Resultado correcto"}</span>
+ : prediction ? <span className="text-rose-400">✗ No acertaste</span>
+ : <span className="text-slate-600">Sin predicción</span>}
               </div>
             </>
           ) : match.liveScore ? (
