@@ -629,7 +629,7 @@ const isKnockout = match.phase !== "grupos";
         <div className="flex items-center gap-2">
           {joker && <Pill color="violet" size="xs">🃏 2x</Pill>}
           {match.liveScore && <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" /><span className="text-rose-400 text-xs font-bold">EN VIVO</span></span>}
-          <span className="text-slate-600 text-xs">{match.date} {match.time}</span>
+         <span className="text-slate-300 text-xs font-medium">{match.date} {match.time}</span> 
         </div>
       </div>
 
