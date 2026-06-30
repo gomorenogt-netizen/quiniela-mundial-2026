@@ -913,7 +913,11 @@ function AIMessages({ participants, matches, scores, isAdmin, predictions }) {
       .map(p => ({ ...p, score: scores[p.id]?.total || 0 }))
       .sort((a,b) => b.score - a.score);
     const played = matches.filter(m => m.played);
-    const last = played[played.length - 1];
+const last = [...played].sort((a, b) => {
+  const dateA = new Date(a.date + "T" + a.time + ":00");
+  const dateB = new Date(b.date + "T" + b.time + ":00");
+  return dateB - dateA;
+})[0];
 const lastMatch = last ? `Ultimo partido: ${last.home} ${last.homeScore}-${last.awayScore} ${last.away}` : "Torneo por comenzar";
 const lastMatchId = last ? last.id : null;
 const resultados = lastMatchId ? sorted.slice(0,12).map(p => {
