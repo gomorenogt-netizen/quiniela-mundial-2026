@@ -932,11 +932,11 @@ const playersWithResults = lastMatchId ? sorted.slice(0,12).map(p => {
   const key = p.id + "::" + lastMatchId;
   const allPreds = predictions || {};
   const pred = allPreds[key];
-  const aR = last.homeScore > last.awayScore ? "H" : last.awayScore > last.homeScore ? "A" : "D";
-  const pR = pred ? (pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D") : null;
-  const exact = pred && pred.h === last.homeScore && pred.a === last.awayScore;
-  const correct = pR && pR === aR;
-  const result = !pred ? "no_pred" : exact ? "exact" : correct ? "correct" : "wrong";
+  const aWinner = last.homeScore > last.awayScore ? last.home : last.awayScore > last.homeScore ? last.away : last.avanza;
+const pWinner = pred ? (pred.h > pred.a ? last.home : pred.a > pred.h ? last.away : pred.avanza) : null;
+const correct = last.phase !== "grupos" ? (pWinner === aWinner) : (pred && (pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D") === (last.homeScore > last.awayScore ? "H" : last.awayScore > last.homeScore ? "A" : "D"));
+const exact = pred && pred.h === last.homeScore && pred.a === last.awayScore && correct;
+const result = !pred ? "no_pred" : exact ? "exact" : correct ? "correct" : "wrong";
   const styles = ["chapin","mexicano","spanglish","english"];
   const style = styles[Math.floor(Math.random() * styles.length)];
   return p.nickname+"("+p.score+"pts,"+( p.gender||"M")+","+result+","+style+")";
