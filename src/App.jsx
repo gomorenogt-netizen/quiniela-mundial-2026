@@ -288,9 +288,9 @@ function calcScores(participants, matches, predictions) {
       if (!pred) return;
       const mult = PHASES[m.phase].multiplier;
       const joker = p.usedJoker?.[m.phase] === m.id ? 2 : 1;
-    const isKnockout = m.phase !== "grupos";
-const aWinner = m.homeScore > m.awayScore ? m.home : m.awayScore > m.homeScore ? m.away : m.avanza;
-const pWinner = pred.h > pred.a ? m.home : pred.a > pred.h ? m.away : pred.avanza;
+   const isKnockout = m.phase !== "grupos";
+const aWinner = m.homeScore > m.awayScore ? m.home : m.awayScore > m.homeScore ? m.away : (m.avanza || null);
+const pWinner = pred.h > pred.a ? m.home : pred.a > pred.h ? m.away : (pred.avanza || null);
 const aR = m.homeScore > m.awayScore ? "H" : m.awayScore > m.homeScore ? "A" : "D";
 const pR = pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D";
 let pts = 0;
@@ -299,8 +299,8 @@ if (correctWinner) {
   pts += SCORING.resultado;
   if ((pred.h - pred.a) === (m.homeScore - m.awayScore)) pts += SCORING.diferencia;
   if (pred.h === m.homeScore && pred.a === m.awayScore) pts += SCORING.marcadorExacto;
-} else if (isKnockout && (pred.h - pred.a) === (m.homeScore - m.awayScore)) {
-  pts += SCORING.diferencia;
+} else if (isKnockout) {
+  if ((pred.h - pred.a) === (m.homeScore - m.awayScore)) pts += SCORING.diferencia;
 }
       const earned = pts * mult * joker;
       total += earned;
