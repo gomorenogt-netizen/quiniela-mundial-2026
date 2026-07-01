@@ -743,7 +743,7 @@ const exact = correct && prediction?.h === match.homeScore && prediction?.a === 
                 <div key={p.id} className="flex items-center gap-2 text-xs">
                   <span>{p.avatar}</span>
                   <span className="text-slate-300 flex-1 truncate">{p.nickname}</span>
-                  <span className="font-black text-white">{pred.h}–{pred.a}</span>
+                  <span className="font-black text-white">{pred.h}–{pred.a}{pred.h===pred.a&&pred.avanza?<span className="text-sky-400 text-xs ml-1">({pred.avanza})</span>:""}</span>
                   <span>{ex ? "⭐" : ok ? "✓" : "✗"}</span>
                 </div>
               );
