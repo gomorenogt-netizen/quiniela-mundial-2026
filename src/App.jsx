@@ -7,11 +7,11 @@ const INVITE_CODE = "Mundi@l2026$!";
 const ADMIN_CODE = "admin2026";
 
 const PHASES = {
-  grupos:  { label: "Fase de Grupos",   multiplier: 1,  emoji: "🌍", color: "emerald" },
-  octavos: { label: "Octavos de Final", multiplier: 2,  emoji: "⚡", color: "sky"     },
-  cuartos: { label: "Cuartos de Final", multiplier: 3,  emoji: "🔥", color: "orange"  },
-  semis:   { label: "Semifinales",      multiplier: 5,  emoji: "💎", color: "violet"  },
-  final:   { label: "Gran Final",       multiplier: 10, emoji: "👑", color: "amber"   },
+  grupos:  { label: "Fase de Grupos",      multiplier: 1,  emoji: "🌍", color: "emerald" },
+  octavos: { label: "16avos de Final",     multiplier: 2,  emoji: "⚡", color: "sky"     },
+  cuartos: { label: "Octavos de Final",    multiplier: 3,  emoji: "🔥", color: "orange"  },
+  semis:   { label: "Cuartos de Final",    multiplier: 5,  emoji: "💎", color: "violet"  },
+  final:   { label: "Semis y Gran Final",  multiplier: 10, emoji: "👑", color: "amber"   },
 };
 
 const SCORING = { resultado: 3, diferencia: 3, marcadorExacto: 4, campeon: 25, subcampeon: 15, goleador: 20 };
