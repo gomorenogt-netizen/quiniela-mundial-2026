@@ -1118,7 +1118,7 @@ const [currentPhase, setCurrentPhase] = useState("grupos");
   const [loaded, setLoaded]           = useState(false);
   const [liveRefresh, setLiveRefresh] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("all");
- const nextMatchId = matches.find(m => !m.played)?.id;
+const nextMatchId = matches.find(m => !m.played && m.phase === currentPhase)?.id;
 
   const scores = calcScores(participants, matches, predictions);
 
