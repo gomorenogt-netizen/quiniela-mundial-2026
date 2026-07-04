@@ -1101,9 +1101,9 @@ export default function App() {
   const getCurrentPhase = () => {
     const now = new Date();
     const phases = [
-      { phase: "final",   start: new Date("2026-07-19") },
-      { phase: "semis",   start: new Date("2026-07-14") },
-      { phase: "cuartos", start: new Date("2026-07-09") },
+      { phase: "final",   start: new Date("2026-07-14") },
+      { phase: "semis",   start: new Date("2026-07-09") },
+      { phase: "cuartos", start: new Date("2026-07-04") },
       { phase: "octavos", start: new Date("2026-06-28") },
       { phase: "grupos",  start: new Date("2026-06-11") },
     ];
