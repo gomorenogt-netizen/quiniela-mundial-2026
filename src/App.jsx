@@ -1262,11 +1262,21 @@ if (pred.avanza) {
   };
 
   const handleSetResult = (matchId, h, a, avanza) => {
-    setMatches(prev => prev.map(m => {
-      if (m.id !== matchId) return m;
-      const winner = h > a ? m.home : a > h ? m.away : avanza;
-      return { ...m, homeScore:h, awayScore:a, played:true, avanza: winner };
-    }));
+    setMatches(prev => {
+      const updated = prev.map(m => {
+        if (m.id !== matchId) return m;
+        const winner = h > a ? m.home : a > h ? m.away : avanza;
+        return { ...m, homeScore:h, awayScore:a, played:true, avanza: winner };
+      });
+      const match = updated.find(m => m.id === matchId);
+      const winner = match.avanza;
+      const winnerFlag = h > a ? match.homeFlag : a > h ? match.awayFlag : (avanza === match.home ? match.homeFlag : match.awayFlag);
+      return updated.map(m => {
+        if (m.home === "Gan. P"+matchId) return { ...m, home: winner, homeFlag: winnerFlag };
+        if (m.away === "Gan. P"+matchId) return { ...m, away: winner, awayFlag: winnerFlag };
+        return m;
+      });
+    });
     showToast("⚡ Resultado cargado", "warn");
   };
 
