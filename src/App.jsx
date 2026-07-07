@@ -11,7 +11,8 @@ const PHASES = {
   octavos: { label: "16avos de Final",     multiplier: 2,  emoji: "⚡", color: "sky"     },
   cuartos: { label: "Octavos de Final",    multiplier: 3,  emoji: "🔥", color: "orange"  },
   semis:   { label: "Cuartos de Final",    multiplier: 5,  emoji: "💎", color: "violet"  },
-  final:   { label: "Semis y Gran Final",  multiplier: 10, emoji: "👑", color: "amber"   },
+  semifinal:{ label: "Semifinales",        multiplier: 7,  emoji: "🌟", color: "rose"    },
+  final:   { label: "Gran Final",          multiplier: 10, emoji: "👑", color: "amber"   },
 };
 
 const SCORING = { resultado: 3, diferencia: 3, marcadorExacto: 4, campeon: 25, subcampeon: 15, goleador: 20 };
@@ -1101,8 +1102,9 @@ export default function App() {
   const getCurrentPhase = () => {
     const now = new Date();
     const phases = [
-      { phase: "final",   start: new Date("2026-07-14") },
-      { phase: "semis",   start: new Date("2026-07-09") },
+      { phase: "final",     start: new Date("2026-07-14") },
+{ phase: "semifinal", start: new Date("2026-07-14") },
+{ phase: "semis",     start: new Date("2026-07-09") },
       { phase: "cuartos", start: new Date("2026-07-04") },
       { phase: "octavos", start: new Date("2026-06-28") },
       { phase: "grupos",  start: new Date("2026-06-11") },
