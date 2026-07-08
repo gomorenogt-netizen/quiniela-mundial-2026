@@ -1283,8 +1283,17 @@ if (pred.avanza) {
   };
 
   const handleUseJoker = (phase, matchId) => {
-    setParticipants(prev => prev.map(p => p.id === user.id ? { ...p, usedJoker: { ...p.usedJoker, [phase]: matchId } } : p));
-    setUser(u => ({ ...u, usedJoker: { ...u.usedJoker, [phase]: matchId } }));
+    const updatedJoker = { ...user.usedJoker, [phase]: matchId };
+    setParticipants(prev => prev.map(p => p.id === user.id ? { ...p, usedJoker: updatedJoker } : p));
+    setUser(u => ({ ...u, usedJoker: updatedJoker }));
+    storeGet("q26:participants").then(function(current) {
+      var list = current || [];
+      var updated = list.map(function(p) {
+        if (p.id === user.id) p.usedJoker = updatedJoker;
+        return p;
+      });
+      storeSet("q26:participants", updated);
+    });
     showToast("🃏 ¡Comodín activado! Puntos dobles 🔥", "ok");
   };
 
