@@ -970,27 +970,6 @@ Reglas de resultado:
 Nota especial: Aurora Y Moose es una chica con su perro salchicha Moose. Mundi2026& es mexicana, siempre usar estilo mexicano.
 
 Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
-${lastMatch}
-Participantes (nombre, puntos, genero, resultado_ultimo_partido, idioma_a_usar):
-${playersWithResults}
-
-Reglas de idioma:
-Nota especial: "Aurora Y Moose" es una chica con su perro salchicha Moose (haired dachshund in English). Menciona al perro  en su mensaje para hacerlo gracioso.
-Nota especial: "Mundi2026&" es mexicana, siempre usar estilo mexicano con ella (por ejemplo: No mamcnes, órale, chingón, no manches, wey).
-- chapin: español guatemalteco (vos, shumo, vieras que, no jodas, que chivo)
-- mexicano: español mexicano (órale, chido, no manches, wey, híjole)  
-- spanglish: mezcla natural español/inglés estilo Miami
-- english: full English Miami style (casual, funny, with some Spanish words)
-
-Reglas de resultado:
-- exact: acertó marcador exacto → felicitarlo exageradamente y burlarse de los demás
-- correct: acertó ganador → elogio moderado
-- wrong: falló → burla amigable
-- no_pred: no puso predicción → regañarlo
-
-Usa el género correcto en español. Con emojis y humor amigable.
-Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
-
     try {
       const res = await fetch("/api/chat", {
         method:"POST",
