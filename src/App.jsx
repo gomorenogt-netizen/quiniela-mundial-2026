@@ -938,14 +938,18 @@ const playersWithResults = lastMatchId ? sorted.slice(0,12).map(p => {
 const pWinner = pred ? (pred.h > pred.a ? last.home : pred.a > pred.h ? last.away : pred.avanza) : null;
 const correct = last.phase !== "grupos" ? (pWinner === aWinner) : (pred && (pred.h > pred.a ? "H" : pred.a > pred.h ? "A" : "D") === (last.homeScore > last.awayScore ? "H" : last.awayScore > last.homeScore ? "A" : "D"));
 const exact = pred && pred.h === last.homeScore && pred.a === last.awayScore && correct;
+const jokerPhase = Object.keys(p.usedJoker||{}).find(function(ph){return p.usedJoker[ph]===lastMatchId});
+const usedJoker = !!jokerPhase;
 const result = !pred ? "no_pred" : exact ? "exact" : correct ? "correct" : "wrong";
+const resultWithJoker = usedJoker && correct ? result+"_joker" : result;
   const styles = ["chapin","mexicano","spanglish","english"];
   const style = styles[Math.floor(Math.random() * styles.length)];
-  return p.nickname+"("+p.score+"pts,"+( p.gender||"M")+","+result+","+style+")";
+ return p.nickname+"("+p.score+"pts,"+(p.gender||"M")+","+resultWithJoker+","+style+")";
 }).join(", ") : sorted.slice(0,12).map((p,i) => p.nickname+"("+p.score+"pts,"+(p.gender||"M")+")").join(", ");
 
 const prompt = `Eres "El Animador Mundialista" de una quiniela familiar del Mundial 2026. Genera exactamente ${Math.min(participants.length, 12)} mensajes personalizados, max 25 palabras cada uno.
-
+- exact_joker: acertó marcador exacto CON comodín → celebración ÉPICA, menciona los puntos dobles obtenidos
+- correct_joker: acertó quién avanza CON comodín → muy emocionado, menciona los puntos extra del comodín
 ${lastMatch}
 Participantes (nombre, puntos, genero, resultado_ultimo_partido, idioma_a_usar):
 ${playersWithResults}
