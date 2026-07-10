@@ -948,8 +948,28 @@ const resultWithJoker = usedJoker && correct ? result+"_joker" : result;
 }).join(", ") : sorted.slice(0,12).map((p,i) => p.nickname+"("+p.score+"pts,"+(p.gender||"M")+")").join(", ");
 
 const prompt = `Eres "El Animador Mundialista" de una quiniela familiar del Mundial 2026. Genera exactamente ${Math.min(participants.length, 12)} mensajes personalizados, max 25 palabras cada uno.
-- exact_joker: acertó marcador exacto CON comodín → celebración ÉPICA, menciona los puntos dobles obtenidos
-- correct_joker: acertó quién avanza CON comodín → muy emocionado, menciona los puntos extra del comodín
+
+${lastMatch}
+Participantes (nombre, puntos, genero, resultado_ultimo_partido, idioma_a_usar):
+${playersWithResults}
+
+Reglas de idioma:
+- chapin: español guatemalteco (vos, mano, vieras que, no jodas, que chilero)
+- mexicano: español mexicano (órale, chido, no manches, wey, híjole)
+- spanglish: mezcla natural español/inglés estilo Miami
+- english: full English Miami style
+
+Reglas de resultado:
+- exact: acertó marcador exacto
+- exact_joker: acertó marcador exacto CON comodín, celebración ÉPICA mencionando puntos dobles
+- correct: acertó quién avanza
+- correct_joker: acertó quién avanza CON comodín, muy emocionado mencionando puntos extra
+- wrong: falló
+- no_pred: no puso predicción
+
+Nota especial: Aurora Y Moose es una chica con su perro salchicha Moose. Mundi2026& es mexicana, siempre usar estilo mexicano.
+
+Responde SOLO con JSON array sin markdown: [{"nickname":"...","mensaje":"..."}]`;
 ${lastMatch}
 Participantes (nombre, puntos, genero, resultado_ultimo_partido, idioma_a_usar):
 ${playersWithResults}
