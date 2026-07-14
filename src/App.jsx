@@ -11,7 +11,7 @@ const PHASES = {
   octavos: { label: "16avos de Final",     multiplier: 2,  emoji: "⚡", color: "sky"     },
   cuartos: { label: "Octavos de Final",    multiplier: 3,  emoji: "🔥", color: "orange"  },
   semis:   { label: "Cuartos de Final",    multiplier: 5,  emoji: "💎", color: "violet"  },
-  semifinal:{ label: "Semifinales",        multiplier: 7,  emoji: "🌟", color: "rose"    },
+  semifinal:{ label: "Semifinales / 3er Lugar", multiplier: 7,  emoji: "🌟", color: "rose"    },
   final:   { label: "Gran Final",          multiplier: 10, emoji: "👑", color: "amber"   },
 };
 
@@ -686,8 +686,8 @@ const exact = correct && prediction?.h === match.homeScore && prediction?.a === 
               className="w-14 text-center bg-slate-800 border border-slate-700 text-white rounded-xl py-2 text-lg font-black focus:outline-none focus:border-emerald-500" placeholder="0" />
          {isKnockout && parseInt(ph) === parseInt(pa) && ph !== "" && (
   <div className="mt-2">
-    <p className="text-amber-400 text-xs text-center font-bold mb-2 animate-pulse">
-      ⚽ Empate en 90 min — ¿Quién avanza?
+   <p className="text-amber-400 text-xs text-center font-bold mb-2 animate-pulse">
+      ⚽ Empate en 90 min — {match.id === 103 ? "¿Quién gana?" : "¿Quién avanza?"}
     </p>
     <div className="flex gap-2">
       <button onClick={() => { setAvanza(match.home); setDirty(true); }}
@@ -756,7 +756,7 @@ const exact = correct && prediction?.h === match.homeScore && prediction?.a === 
       {isAdmin && !match.played && (
   <div className="border-t border-amber-900/40 px-4 py-3 bg-amber-950/20">
     <p className="text-amber-500 text-xs text-center font-bold mb-2">🔧 Cargar resultado oficial</p>
-{isKnockout && <p className="text-amber-400 text-xs text-center mb-2">⏱️ Marcador al 90 minutos</p>}
+{isKnockout && <p className="text-amber-400 text-xs text-center mb-2">{match.id === 103 ? "🥉 Tercer lugar — Marcador al 90 minutos" : "⏱️ Marcador al 90 minutos"}</p>}
     <div className="flex items-center gap-2 justify-center">
       <input type="number" min="0" max="20" value={rh} onChange={e => setRh(e.target.value)}
         className="w-14 text-center bg-slate-800 border border-amber-700/50 text-amber-300 rounded-xl py-2 text-lg font-black focus:outline-none" />
