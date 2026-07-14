@@ -674,7 +674,7 @@ const exact = correct && prediction?.h === match.homeScore && prediction?.a === 
          <p className="text-slate-500 text-xs text-center mb-2">
   {isKnockout 
     ? (prediction 
-        ? <span>{prediction.h}–{prediction.a} {prediction.avanza ? <span className="text-emerald-400 font-bold">· ✅ Avanza: {prediction.avanza}</span> : <span className="text-amber-400">· ⚠️ Sin seleccionar quién avanza</span>} · Editar:</span>
+        ? <span>{prediction.h}–{prediction.a} {prediction.avanza ? <span className="text-emerald-400 font-bold">· ✅ Gana: {prediction.avanza}</span> : <span className="text-amber-400">· ⚠️ Sin seleccionar quién avanza</span>} · Editar:</span>
         : "Tu predicción al 90 min:")
     : (prediction ? `Tu predicción: ${prediction.h}–${prediction.a} · Editar:` : "Tu predicción:")}
 </p>
@@ -686,8 +686,8 @@ const exact = correct && prediction?.h === match.homeScore && prediction?.a === 
               className="w-14 text-center bg-slate-800 border border-slate-700 text-white rounded-xl py-2 text-lg font-black focus:outline-none focus:border-emerald-500" placeholder="0" />
          {isKnockout && parseInt(ph) === parseInt(pa) && ph !== "" && (
   <div className="mt-2">
-   <p className="text-amber-400 text-xs text-center font-bold mb-2 animate-pulse">
-      ⚽ Empate en 90 min — {match.id === 103 ? "¿Quién gana?" : "¿Quién avanza?"}
+  <p className="text-amber-400 text-xs text-center font-bold mb-2 animate-pulse">
+      ⚽ Empate en 90 min — ¿Quién gana?
     </p>
     <div className="flex gap-2">
       <button onClick={() => { setAvanza(match.home); setDirty(true); }}
@@ -744,7 +744,7 @@ const exact = correct && prediction?.h === match.homeScore && prediction?.a === 
                 <div key={p.id} className="flex items-center gap-2 text-xs">
                   <span>{p.avatar}</span>
                   <span className="text-slate-300 flex-1 truncate">{p.nickname}</span>
-                  <span className="font-black text-white">{pred.h}–{pred.a}{pred.h===pred.a&&pred.avanza?<span className="text-sky-400 text-xs ml-1">({pred.avanza})</span>:""}</span>
+                  <span className="font-black text-white">{pred.h}–{pred.a}{isKnockout&&pred.h===pred.a&&pred.avanza?<span className="text-sky-400 text-xs ml-1">({pred.avanza})</span>:""} </span>
                   <span>{ex ? "⭐" : ok ? "✓" : "✗"}</span>
                 </div>
               );
