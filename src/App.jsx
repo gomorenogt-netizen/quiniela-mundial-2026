@@ -1276,9 +1276,14 @@ if (pred.avanza) {
       const match = updated.find(m => m.id === matchId);
       const winner = match.avanza;
       const winnerFlag = h > a ? match.homeFlag : a > h ? match.awayFlag : (avanza === match.home ? match.homeFlag : match.awayFlag);
+     const bracket = match.bracket;
+      const loser = h > a ? match.away : a > h ? match.home : (avanza === match.home ? match.away : match.home);
+      const loserFlag = h > a ? match.awayFlag : a > h ? match.homeFlag : (avanza === match.home ? match.awayFlag : match.homeFlag);
       return updated.map(m => {
-        if (m.home === "Gan. P"+matchId) return { ...m, home: winner, homeFlag: winnerFlag };
-        if (m.away === "Gan. P"+matchId) return { ...m, away: winner, awayFlag: winnerFlag };
+        if (m.home === "Gan. P"+matchId || m.home === "Gan. "+bracket) return { ...m, home: winner, homeFlag: winnerFlag };
+        if (m.away === "Gan. P"+matchId || m.away === "Gan. "+bracket) return { ...m, away: winner, awayFlag: winnerFlag };
+        if (m.home === "Per. "+bracket) return { ...m, home: loser, homeFlag: loserFlag };
+        if (m.away === "Per. "+bracket) return { ...m, away: loser, awayFlag: loserFlag };
         return m;
       });
     });
