@@ -307,6 +307,10 @@ if (correctWinner) {
       total += earned;
       byPhase[m.phase] += earned;
     });
+   const sp = specials[p.id] || {};
+    if (sp.campeon === "España") total += SCORING.campeon;
+    if (sp.subcampeon === "Argentina") total += SCORING.subcampeon;
+    if (sp.goleador === "Kylian Mbappé") total += SCORING.goleador;
     out[p.id] = { total, byPhase };
   });
   return out;
@@ -1125,7 +1129,7 @@ const [currentPhase, setCurrentPhase] = useState("grupos");
   const [selectedGroup, setSelectedGroup] = useState("all");
 const nextMatchId = matches.find(m => !m.played && m.phase === currentPhase)?.id;
 
-  const scores = calcScores(participants, matches, predictions);
+  const scores = calcScores(participants, matches, predictions, specials);
 
   // ── Load from shared storage ──
   useEffect(() => {
