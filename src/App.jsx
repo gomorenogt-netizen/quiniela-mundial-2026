@@ -277,7 +277,7 @@ async function storeSet(key, val) {
 // ============================================================
 // SCORE ENGINE
 // ============================================================
-function calcScores(participants, matches, predictions) {
+function calcScores(participants, matches, predictions, specials = {}) {
   const out = {};
   participants.forEach(p => {
     let total = 0, byPhase = {};
